@@ -1,0 +1,20 @@
+<div class="cuenta-wrapper" (mouseenter)="mostrar()" (mouseleave)="ocultar()">
+  <button class="cuenta-boton">
+    <span class="cuenta-icono">👤</span>
+    Cuenta
+  </button>
+
+  <div class="cuenta-menu" [ngClass]="{ 'activa': mostrarMenu }">
+    <div
+      *ngFor="let opcion of opcionesVisibles"
+      class="cuenta-opcion"
+      (click)="handleOpcion(opcion)">
+      {{ opcion.titulo }}
+    </div>
+
+    <!-- Mensaje si está logueado pero no tiene permisos válidos -->
+    <div *ngIf="isLoggedIn && opcionesVisibles.length === 0" class="cuenta-opcion">
+      No tienes permisos, no verás opciones
+    </div>
+  </div>
+</div>

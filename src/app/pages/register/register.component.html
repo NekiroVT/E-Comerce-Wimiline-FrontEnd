@@ -1,0 +1,41 @@
+<div class="container">
+  <h2>📝 Completa tu Perfil</h2>
+
+  <div class="image-picker">
+    <input type="text" [(ngModel)]="form.profilePhotoUrl" placeholder="URL de imagen de perfil" />
+  </div>
+
+  <input class="input" [value]="email" disabled placeholder="Correo verificado" />
+  <input class="input" [(ngModel)]="form.username" placeholder="Username" />
+  <input class="input" type="password" [(ngModel)]="form.password" placeholder="Contraseña" />
+  <input class="input" type="password" [(ngModel)]="form.confirmPassword" placeholder="Confirmar contraseña" />
+  <input class="input" [(ngModel)]="form.firstName" placeholder="Nombre" />
+  <input class="input" [(ngModel)]="form.lastName" placeholder="Apellido" />
+
+  <label>Fecha de nacimiento:</label>
+  <select [(ngModel)]="form.birthDay">
+    <option value="">Día</option>
+    <option *ngFor="let d of [].constructor(31); let i = index" [value]="(i + 1) | number:'2.0'">
+      {{ i + 1 }}
+    </option>
+  </select>
+
+  <select [(ngModel)]="form.birthMonth">
+    <option value="">Mes</option>
+    <option *ngFor="let m of [].constructor(12); let i = index" [value]="(i + 1) | number:'2.0'">
+      {{ i + 1 }}
+    </option>
+  </select>
+
+  <select [(ngModel)]="form.birthYear">
+    <option value="">Año</option>
+    <option *ngFor="let y of [].constructor(100); let i = index" [value]="1900 + i">
+      {{ 1900 + i }}
+    </option>
+  </select>
+
+  <button (click)="handleRegister()">Registrar</button>
+
+  <p *ngIf="error" class="error-text">{{ error }}</p>
+  <p *ngIf="success" class="success-text">{{ success }}</p>
+</div>

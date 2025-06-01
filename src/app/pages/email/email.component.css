@@ -1,0 +1,71 @@
+.success-msg {
+  color: #2ecc71;
+  font-weight: bold;
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+.email-container {
+  background-color: #e9f3ff;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.email-card {
+  background-color: #ffffff;
+  padding: 32px;
+  border-radius: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+.email-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 28px; /* un poco más de aire debajo del título */
+  color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; /* separación si usas emoji o ícono */
+}
+
+.login-input {
+  padding: 12px 14px;
+  border: 1px solid #d3d3d3;
+  border-radius: 12px;
+  background-color: #fdfdff;
+  color: #333;
+  font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px; /* ← esto separa del botón */
+}
+
+.btn {
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-login {
+  background-color: #8067D9;
+  color: white;
+  border-bottom: 2px solid #6551C5;
+  width: 100%;
+}
+
+.btn-login:hover {
+  background-color: #732d91;
+}

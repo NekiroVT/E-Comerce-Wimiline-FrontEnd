@@ -1,0 +1,16 @@
+<div class="container">
+  <h2>🔐 Verificar Código</h2>
+  <p>Se envió un código a:</p>
+  <p class="email">{{ email }}</p>
+
+  <input class="input" type="text" maxlength="4" [(ngModel)]="otp" placeholder="Ingrese el código OTP" />
+
+  <button (click)="handleVerifyOtp()" [disabled]="otp.length !== 4">Verificar Código</button>
+
+  <p *ngIf="error" class="error-text">{{ error }}</p>
+
+  <div style="margin-top: 20px;">
+    <button *ngIf="canResend" (click)="handleResendOtp()" class="resend-button">Reenviar Código</button>
+    <p *ngIf="!canResend" class="timer">Reenviar en {{ timer }}s</p>
+  </div>
+</div>

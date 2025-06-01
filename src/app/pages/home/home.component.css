@@ -1,0 +1,139 @@
+/* ============================= */
+/* 🔍 Zona superior de buscador */
+/* ============================= */
+
+.top-search {
+  background-color: #e9f3ff;
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.search-wrapper {
+  display: flex;
+  align-items: center;        /* 🔥 Centrado vertical */
+  gap: 16px;
+  background-color: white;
+  padding: 10px 16px;
+  border-radius: 50px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  width: 90%;
+  max-width: 900px;
+}
+
+/* Imagen del logo */
+.search-logo {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.search-wrapper app-buscador {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+
+/* Estilo general del botón de sesión */
+.login-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #111;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.login-button:hover {
+  background-color: #d5d5d5;
+}
+
+/* Ícono del botón */
+.login-icon {
+  font-size: 18px;
+  color: #4B3AB2;
+}
+
+
+
+
+
+
+/* ============================= */
+/* 📦 Vista de productos general */
+/* ============================= */
+
+.container {
+  margin: 0px;
+  padding: 24px;
+  background-color: #fff;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+.loading {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 100px;
+  color: #6a1b9a;
+}
+
+.grid {
+  display: grid;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.card {
+  display: flex;
+  justify-content: center;
+}
+
+.title {
+  text-align: center;
+  color: #6a1b9a;
+  margin-top: 40px;
+  font-size: 20px;
+}
+
+.message {
+  margin-top: 30px;
+  text-align: center;
+  color: gray;
+  font-size: 16px;
+}
+
+/* ============================= */
+/* 🧭 Tabs (Inicio, Ofertas, etc) */
+/* ============================= */
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 16px 0;
+}
+
+.tabs button {
+  padding: 10px 20px;
+  background-color: #f0e6ff;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  color: #444;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.tabs button.active {
+  background-color: #6a1b9a;
+  color: white;
+}

@@ -1,0 +1,53 @@
+.container {
+  max-width: 400px;
+  margin: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background-color: #fff;
+  border-radius: 12px;
+}
+
+.email {
+  text-align: center;
+  font-weight: bold;
+  color: #6a1b9a;
+}
+
+.input {
+  padding: 12px;
+  font-size: 18px;
+  letter-spacing: 8px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+button {
+  padding: 12px;
+  background-color: #6a1b9a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.error-text {
+  color: #e74c3c;
+  font-weight: bold;
+  text-align: center;
+}
+
+.resend-button {
+  background-color: #8e44ad;
+  padding: 10px;
+  border-radius: 8px;
+  color: white;
+  border: none;
+}
+
+.timer {
+  text-align: center;
+  color: #999;
+}

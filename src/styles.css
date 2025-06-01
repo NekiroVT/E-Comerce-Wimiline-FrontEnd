@@ -1,0 +1,43 @@
+/* You can add global styles to this file, and also import other style files */
+/* Quita espacios por defecto */
+body, html {
+  margin: 0;
+  padding: 0;
+}
+/*
+html {
+  overflow-y: scroll;
+}*/
+
+/* Scroll personalizado para navegadores WebKit (Chrome, Edge, Safari) */
+/* Minimalist scrollbar estilo cuadradito flotante */
+/* Scroll estilo cuadrado y minimalista */
+
+/* Scroll grueso, cuadrado y sin adornos */
+
+/* Scroll para navegadores WebKit (Chrome, Edge, Opera) */
+/* Scroll general */
+/* ===== Scrollbar base ===== */
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    overflow-y: scroll;
+    margin: 0px;
+    background: rgb(255, 255, 255);
+        
+    
+}
+
+.body {
+    padding: 15px;
+    background: #ffffff; /*background: #a256ff;*/
+}
+
+body::-webkit-scrollbar {
+    width: 15px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: rgb(197, 25, 105);
+}

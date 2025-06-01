@@ -1,0 +1,27 @@
+<!-- Botón estilo 'Cuenta' para abrir modal -->
+<button class="boton-carrito-header" (click)="abrirModal()">
+  <span class="icono">🛒</span>
+  
+</button>
+
+<!-- Modal -->
+<div class="modal-fondo" *ngIf="mostrarModal" (click)="cerrarModal()">
+  <div class="modal-contenido" (click)="$event.stopPropagation()">
+    <h3>🛒 Mi Carrito</h3>
+
+    <div *ngIf="productos.length === 0" class="mensaje">Tu carrito está vacío.</div>
+
+    <ul *ngIf="productos.length > 0" class="lista-productos">
+      <li *ngFor="let producto of productos" class="producto">
+        <span>{{ producto.nombre }}</span>
+        <span>{{ producto.precio | currency: 'PEN' }}</span>
+        <button (click)="eliminarProducto(producto.id)" class="btn-x">❌</button>
+      </li>
+    </ul>
+
+    <button *ngIf="productos.length > 0" (click)="vaciarCarrito()" class="vaciar">
+      Vaciar carrito
+    </button>
+    <button (click)="cerrarModal()" class="cerrar">Cerrar</button>
+  </div>
+</div>

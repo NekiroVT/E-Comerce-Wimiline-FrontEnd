@@ -1,0 +1,104 @@
+.login-container {
+  background-color: #e9f3ff;
+  height: 100vh; /* ✅ usa height en vez de min-height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0; /* ✅ elimina espacio interno */
+  margin: 0;  /* ✅ elimina márgenes del body si afecta */
+  box-sizing: border-box;
+}
+
+
+.login-card {
+  background-color: #ffffff;
+  padding: 32px;
+  border-radius: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+}
+
+.login-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 24px;
+  color: #000000;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.login-input {
+  padding: 12px;
+  border: 1px solid #d3d3d3;
+  border-radius: 12px;
+  background-color: #fdfdff;
+  color: #333;
+  font-size: 16px;
+}
+
+.btn {
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-login {
+  background-color: #8067D9;
+  color: white;
+  border-bottom: 2px solid #6551C5;
+}
+
+.btn-login:hover {
+  background-color: #732d91;
+}
+
+.btn-register {
+  background-color: #B494FF;
+  color: #4B3AB2;
+  border-bottom: 2px solid #9A7EEC;
+}
+
+.btn-register:hover {
+  background-color: #9e68e0;
+}
+
+.btn-skip {
+  margin-top: 20px;
+  background: none;
+  color: #4B3AB2;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.btn-skip:hover {
+  color: #4B3AB2; /* tono más oscuro al pasar el mouse */
+}
+
+
+.error-msg {
+  color: #e74c3c;
+  font-weight: bold;
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+.loading {
+  text-align: center;
+  font-size: 20px;
+  padding: 50px;
+  color: #6a1b9a;
+}

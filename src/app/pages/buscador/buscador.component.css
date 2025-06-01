@@ -1,0 +1,29 @@
+.wrapper {
+  display: flex;
+  align-items: center;  /* ✅ centra vertical */
+  margin: 0;             /* ✅ quita espacio innecesario */
+  flex: 1;               /* ✅ permite que el input se expanda dentro del search-wrapper */
+}
+
+
+.input {
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 0 16px;
+  background-color: #f0f0f0;
+  outline: none;
+}
+
+.input.small {
+  width: 100%;
+  max-width: 200px;
+  height: 36px;
+  font-size: 14px;
+}
+
+.input.large {
+  width: 250px;        /* ⬅️ antes 300px */
+  height: 38px;        /* ⬅️ antes 44px */
+  font-size: 16px;     /* ⬅️ antes 18px */
+  padding: 0 12px;     /* ⬅️ un poco menos de padding */
+}

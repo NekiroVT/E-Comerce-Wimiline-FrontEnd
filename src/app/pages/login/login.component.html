@@ -1,0 +1,39 @@
+<div class="login-container" *ngIf="!checkingLogin; else loading">
+  <div class="login-card">
+    <h1 class="login-title">Wimiline</h1>
+
+    <form class="login-form" (ngSubmit)="handleLogin()">
+      <input
+        type="text"
+        class="login-input"
+        placeholder="Usuario"
+        [(ngModel)]="username"
+        name="username"
+        required
+      />
+
+      <input
+        type="password"
+        class="login-input"
+        placeholder="Contraseña"
+        [(ngModel)]="password"
+        name="password"
+        required
+      />
+
+      <button class="btn btn-login" type="submit">Iniciar sesión</button>
+
+      <button type="button" class="btn btn-register" (click)="handleCrearCuenta()">
+        Registrarme
+      </button>
+
+      <p *ngIf="error" class="error-msg">{{ error }}</p>
+
+      <a class="btn-skip" (click)="handleSeguirSinCuenta()">Seguir sin cuenta</a>
+    </form>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="loading">Cargando...</div>
+</ng-template>

@@ -1,0 +1,11 @@
+<div class="wrapper">
+  <input
+    class="input"
+    [ngClass]="{ small: isSmallScreen, large: !isSmallScreen }"
+    type="text"
+    placeholder="Buscar productos..."
+    [value]="value"
+    (input)="handleInput($event)"
+    (keydown)="handleSubmit($event)"
+  />
+</div>

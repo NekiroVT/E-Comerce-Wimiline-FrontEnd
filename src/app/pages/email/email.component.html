@@ -1,0 +1,19 @@
+<div class="email-container">
+  <div class="email-card">
+    <h2 class="email-title">📩 Ingresa tu correo</h2>
+
+    <input
+      class="login-input"
+      [(ngModel)]="email"
+      placeholder="Correo electrónico"
+      type="email"
+    />
+
+    <button class="btn btn-login" (click)="handleEnviarCodigo()" [disabled]="loading">
+      {{ loading ? 'Enviando...' : 'Enviar Código' }}
+    </button>
+
+    <p *ngIf="error" class="error-msg">{{ error }}</p>
+    <p *ngIf="success" class="success-msg">{{ success }}</p>
+  </div>
+</div>

@@ -1,0 +1,47 @@
+<!-- 🔍 Zona superior con logo + buscador -->
+<div class="top-search">
+  <div class="search-wrapper">
+    <img src="../../../assets/wwwwwwr.jpg" alt="Logo" class="search-logo" />
+
+    <app-buscador
+      [value]="searchQuery"
+      (valueChange)="searchQuery = $event"
+      (submit)="handleSearch()"
+    ></app-buscador>
+
+    <!-- Botón de cuenta reemplazado -->
+     <app-carrito></app-carrito>
+
+    <app-button-perfil></app-button-perfil>
+  </div>
+</div>
+
+
+
+<!-- 🧭 Navbar va después del buscador -->
+<app-navbar></app-navbar>
+
+<!-- 📦 Contenido de productos -->
+<div class="container">
+  <ng-container *ngIf="loading; else productosView">
+    <div class="loading">Cargando productos...</div>
+  </ng-container>
+
+  <ng-template #productosView>
+    <div *ngIf="filtrados.length === 0" class="message">
+      ⚠️ No hay productos disponibles.
+    </div>
+
+    <div class="grid" [ngStyle]="{'grid-template-columns': 'repeat(' + numColumns + ', 1fr)'}">
+      <div *ngFor="let producto of filtrados" class="card" [style.width.px]="cardWidth">
+        <app-producto-card [producto]="producto"></app-producto-card>
+      </div>
+    </div>
+
+    <h2 class="title">
+      {{ isLoggedIn ? '🎉 Bienvenido al sistema de ventas' : '😊 Bienvenido :3' }}
+    </h2>
+
+    <button *ngIf="isLoggedIn" (click)="handleLogout()">Cerrar sesión</button>
+  </ng-template>
+</div>
