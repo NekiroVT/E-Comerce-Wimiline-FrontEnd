@@ -1,0 +1,15 @@
+<div class="ayuda-wrapper" (mouseenter)="mostrar()" (mouseleave)="ocultar()">
+  <button class="ayuda-boton">
+    <span class="ayuda-icono">❓</span>
+    Ayuda
+  </button>
+
+  <div class="ayuda-menu" [ngClass]="{ 'activa': mostrarMenu }">
+    <div
+      *ngFor="let opcion of opcionesAyuda"
+      class="ayuda-opcion"
+      (click)="handleOpcion(opcion)">
+      {{ opcion.titulo }}
+    </div>
+  </div>
+</div>

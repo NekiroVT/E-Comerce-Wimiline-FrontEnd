@@ -1,0 +1,37 @@
+<div class="detalle-container">
+  <!-- 📸 Galería -->
+  <div class="galeria">
+    <img class="imagen-principal" [src]="imagenSeleccionada" alt="Producto" />
+    <div class="miniaturas">
+      <img
+        *ngFor="let img of producto.imagenes"
+        [src]="img.urlImagen"
+        class="miniatura"
+        (click)="imagenSeleccionada = img.urlImagen"
+        [class.activa]="imagenSeleccionada === img.urlImagen"
+      />
+    </div>
+  </div>
+
+  <!-- 🧾 Info producto -->
+  <div class="info-producto">
+    <h2>{{ producto.nombre }}</h2>
+    <p class="precio">S/. {{ producto.precio }}</p>
+    <p class="valoracion">⭐️ {{ producto.valoracion }} / 5</p>
+    <p class="descripcion">{{ producto.descripcion }}</p>
+
+    <div class="seccion">
+      <strong>Variaciones:</strong>
+      {{ getVariaciones() || 'No hay variaciones disponibles.' }}
+    </div>
+
+    <div class="seccion" *ngIf="producto.especificaciones?.length > 0; else noEsp">
+      <p *ngFor="let esp of producto.especificaciones">
+        🔹 {{ esp.clave }}: {{ esp.valor }}
+      </p>
+    </div>
+    <ng-template #noEsp>
+      <p class="seccion">No hay especificaciones disponibles.</p>
+    </ng-template>
+  </div>
+</div>

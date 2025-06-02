@@ -1,0 +1,20 @@
+<div class="categoria-wrapper" (mouseenter)="mostrar()" (mouseleave)="ocultar()">
+  <button class="categoria-boton">
+    <span class="categoria-icono">🗂️</span>
+    CATEGORÍAS
+  </button>
+
+  <div class="categoria-menu" [ngClass]="{ 'activa': mostrarMenu }">
+    <ng-container *ngIf="!cargando && categorias.length > 0; else vacio">
+      <div *ngFor="let cat of categorias" class="categoria-opcion">
+        {{ cat.nombre }}
+      </div>
+    </ng-container>
+
+    <ng-template #vacio>
+      <div class="categoria-opcion sin-dato">
+        ❌ No hay categorías registradas
+      </div>
+    </ng-template>
+  </div>
+</div>

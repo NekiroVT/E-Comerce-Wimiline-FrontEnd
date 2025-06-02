@@ -1,0 +1,94 @@
+<h2>Gestión de Permisos</h2>
+
+<div class="permiso-header">
+    <div class="buscador-wrapper">
+        <input type="text" placeholder="Buscar" class="buscador" [(ngModel)]="filtro"
+            (keydown.enter)="filtrarPermisos()" />
+        <button class="lupa" (click)="filtrarPermisos()">🔍</button>
+    </div>
+
+    <button class="crear" (click)="abrirModal()">Crear Permiso</button>
+</div>
+
+<table class="tabla-permisos">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let permiso of permisosFiltrados">
+            <td>{{ permiso.name }}</td>
+            <td>{{ permiso.description }}</td>
+            <td>
+                <button class="btn azul" (click)="abrirModalEditar(permiso)">Editar</button>
+                <button class="btn rojo" (click)="abrirModalEliminar(permiso)">Eliminar</button>
+
+
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- 🪟 Mensaje si no hay resultados -->
+<div class="mensaje-vacio" *ngIf="permisosFiltrados.length === 0">
+    ⚠️ No se encontraron resultados.
+</div>
+
+<!-- 🪟 Modal para crear permiso -->
+<div class="modal" *ngIf="mostrarModal">
+    <div class="modal-content">
+        <h3>Crear Permiso</h3>
+
+        <input type="text" class="input-text" [(ngModel)]="nuevoPermiso.name" placeholder="Nombre del permiso" />
+        <textarea class="input-textarea" [(ngModel)]="nuevoPermiso.description" placeholder="Descripción"></textarea>
+
+        <p class="mensaje">{{ mensaje }}</p>
+
+        <div class="acciones">
+            <button class="btn crear" (click)="crearPermiso()">Crear</button>
+            <button class="btn cancelar" (click)="cerrarModal()">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<!-- 🪟 Modal para editar permiso -->
+<div class="modal" *ngIf="mostrarModalEditar">
+    <div class="modal-content">
+        <h3>Editar Permiso</h3>
+
+        <input type="text" class="input-text" [(ngModel)]="permisoEditado.name"
+            placeholder="Nuevo nombre del permiso" />
+        <textarea class="input-textarea" [(ngModel)]="permisoEditado.description"
+            placeholder="Nueva descripción"></textarea>
+
+        <p class="mensaje">{{ mensajeEditar }}</p>
+
+        <div class="acciones">
+            <button class="btn crear" (click)="guardarCambios()">Guardar</button>
+            <button class="btn cancelar" (click)="cerrarModalEditar()">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<!-- 🪟 Modal para confirmar eliminación -->
+<div class="modal" *ngIf="mostrarModalEliminar">
+  <div class="modal-content">
+    <h3>¿Estás seguro de eliminar este permiso?</h3>
+
+    <p class="mensaje">
+      ❌ Esta acción no se puede deshacer.<br />
+      Permiso: <strong>{{ permisoAEliminar?.name }}</strong>
+    </p>
+
+    <!-- Mensaje de error o confirmación -->
+    <p class="mensaje" *ngIf="mensajeEliminar">⚠️ {{ mensajeEliminar }}</p>
+
+    <div class="acciones">
+      <button class="btn rojo" (click)="confirmarEliminar()">Eliminar</button>
+      <button class="btn cancelar" (click)="cerrarModalEliminar()">Cancelar</button>
+    </div>
+  </div>
+</div>

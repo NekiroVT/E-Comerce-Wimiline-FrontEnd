@@ -5,15 +5,19 @@ import { FormsModule } from '@angular/forms';
 
 import { ProductosService } from '../../services/productos.service';
 import { ProductoCardComponent } from '../../pages/producto-card/producto-card.component';
-import { BuscadorComponent } from '../../pages/buscador/buscador.component';
-import { NavbarComponent } from '../../pages/navbar/navbar.component'; // ✅ Importado
-import { ButtonPerfilComponent } from '../../pages/button-perfil/button-perfil.component';
-import { CarritoComponent } from '../../pages/carrito/carrito.component';
+import { NavbarComponent } from '../../pages/navbar/navbar.component';
+import { TopBarComponent } from '../../pages/topbar/topbar.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, ProductoCardComponent, BuscadorComponent, ButtonPerfilComponent, NavbarComponent, CarritoComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ProductoCardComponent,
+    NavbarComponent,
+    TopBarComponent
+  ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
@@ -73,7 +77,9 @@ export class HomeComponent implements OnInit {
 
   handleSearch() {
     const q = this.searchQuery.toLowerCase();
-    this.filtrados = this.productos.filter(p => p.nombre.toLowerCase().includes(q));
+    this.filtrados = this.productos.filter((p) =>
+      p.nombre.toLowerCase().includes(q)
+    );
   }
 
   handleLogout() {
@@ -81,5 +87,9 @@ export class HomeComponent implements OnInit {
     localStorage.removeItem('permisos');
     this.isLoggedIn = false;
     this.filtrados = [];
+  }
+
+  verProducto(id: string) {
+    this.router.navigate([`/selectproducto/${id}.html`]);
   }
 }

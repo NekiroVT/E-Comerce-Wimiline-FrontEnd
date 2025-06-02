@@ -1,0 +1,26 @@
+.modo-wrapper {
+  display: inline-block;
+}
+
+.modo-boton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #dcdcdc;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 20px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #111;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.modo-boton:hover {
+  background-color: #c2c2c2;
+}
+
+.modo-icono {
+  font-size: 20px;
+}

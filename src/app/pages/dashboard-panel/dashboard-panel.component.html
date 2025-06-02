@@ -1,0 +1,30 @@
+<div class="dashboard-panel">
+  <!-- Perfil del usuario -->
+  <div class="perfil-info">
+    <img [src]="fotoPerfil" alt="Foto de perfil" class="foto-perfil" />
+    <div class="usuario-texto">
+      <strong>{{ rol.toUpperCase() }}</strong>
+      <div>{{ username }}</div>
+    </div>
+  </div>
+
+  <!-- Opciones -->
+  <div class="opciones">
+    <!-- ✅ MENSAJE SI NO TIENE OPCIONES -->
+    <ng-container *ngIf="opcionesVisibles.length === 0">
+      <div class="sin-opciones">
+        ❌ No tienes permisos. No tienes opciones disponibles.
+      </div>
+    </ng-container>
+
+    <!-- ✅ LISTA DE OPCIONES -->
+    <div
+      *ngFor="let op of opcionesVisibles"
+      class="opcion"
+      (click)="navegar(op.ruta)"
+    >
+      <span class="icono">{{ op.icono }}</span>
+      <span>{{ op.titulo }}</span>
+    </div>
+  </div>
+</div>

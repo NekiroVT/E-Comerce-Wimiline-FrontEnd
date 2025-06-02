@@ -1,9 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
 /* Quita espacios por defecto */
-body, html {
+html, body {
+  height: 100%;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
+
+body.no-scroll {
+  overflow: hidden !important;
+}
+
 /*
 html {
   overflow-y: scroll;
@@ -22,7 +29,6 @@ html {
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    overflow-y: scroll;
     margin: 0px;
     background: rgb(255, 255, 255);
         
@@ -34,10 +40,109 @@ body {
     background: #ffffff; /*background: #a256ff;*/
 }
 
-body::-webkit-scrollbar {
-    width: 15px;
+
+
+
+
+
+
+
+
+
+
+/* Oculta la barra fea de Google Translate */
+.goog-te-banner-frame,
+.goog-te-gadget,
+body > .skiptranslate {
+  display: none !important;
 }
 
-body::-webkit-scrollbar-thumb {
-    background: rgb(197, 25, 105);
+body {
+  top: 0 !important;
+}
+
+
+
+
+
+
+
+/*-- TOP BAR --*/
+body.modo-oscuro .top-search {
+  background-color: #1a1a1a;
+}
+
+body.modo-oscuro .search-wrapper {
+  background-color: #505050;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.05);
+}
+
+body.modo-oscuro .search-logo {
+  filter: brightness(0.9); /* opcional si tu logo es muy claro */
+}
+
+/*-- Nav Bar --*/
+
+body.modo-oscuro .navbar {
+  background-color: #3e3e3e !important;
+  box-shadow: 0 2px 4px rgba(255, 255, 255, 0.05) !important;
+}
+
+body.modo-oscuro .navbar a {
+  color: #ddd !important;
+}
+
+body.modo-oscuro .navbar a:hover {
+  color: #ffb74d !important;
+}
+
+body.modo-oscuro .navbar a.active {
+  color: #c2b0ff !important;
+  border-bottom: 2px solid #c2b0ff !important;
+}
+
+/*-- Home --*/
+
+body.modo-oscuro {
+  background-color: #121212 !important;
+}
+
+body.modo-oscuro .container {
+  background-color: #1e1e1e !important;
+}
+
+/*-- Buscador --*/
+
+body.modo-oscuro .wrapper {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  flex: 1;
+}
+
+body.modo-oscuro .input {
+  border: 1px solid #555 !important;
+  border-radius: 20px !important;
+  padding: 0 16px !important;
+  background-color: #2a2a2a !important;
+  color: #fff !important;
+  outline: none !important;
+}
+
+body.modo-oscuro .input::placeholder {
+  color: #bbb !important;
+}
+
+body.modo-oscuro .input.small {
+  width: 100% !important;
+  max-width: 200px !important;
+  height: 36px !important;
+  font-size: 14px !important;
+}
+
+body.modo-oscuro .input.large {
+  width: 250px !important;
+  height: 38px !important;
+  font-size: 16px !important;
+  padding: 0 12px !important;
 }

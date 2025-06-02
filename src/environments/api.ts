@@ -6,3 +6,5 @@ export const USUARIOS_API_URL = `${API_BASE}/usuarios`;
 export const PRODUCTOS_API_URL = `${API_BASE}/productos`;
 export const ROLES_API_URL = `${API_BASE}/roles`;
 export const PERMISOS_API_URL = `${API_BASE}/permissions`;
+export const CATEGORIAS_API_URL = `${API_BASE}/categorias`;
+

@@ -1,47 +1,42 @@
-<!-- 🔍 Zona superior con logo + buscador -->
-<div class="top-search">
-  <div class="search-wrapper">
-    <img src="../../../assets/wwwwwwr.jpg" alt="Logo" class="search-logo" />
-
-    <app-buscador
-      [value]="searchQuery"
-      (valueChange)="searchQuery = $event"
-      (submit)="handleSearch()"
-    ></app-buscador>
-
-    <!-- Botón de cuenta reemplazado -->
-     <app-carrito></app-carrito>
-
-    <app-button-perfil></app-button-perfil>
-  </div>
-</div>
-
-
-
-<!-- 🧭 Navbar va después del buscador -->
-<app-navbar></app-navbar>
-
-<!-- 📦 Contenido de productos -->
+<!-- 📦 Contenedor principal -->
 <div class="container">
+
+  <!-- 🔍 Zona superior con logo + buscador -->
+  <app-top-bar [searchQuery]="searchQuery" (searchQueryChange)="searchQuery = $event" (submit)="handleSearch()"></app-top-bar>
+
+  <!-- 🧭 Navbar justo debajo del buscador -->
+  <app-navbar></app-navbar>
+
+  <!-- 🔄 Cargando productos -->
   <ng-container *ngIf="loading; else productosView">
     <div class="loading">Cargando productos...</div>
   </ng-container>
 
+  <!-- 📦 Vista de productos -->
   <ng-template #productosView>
-    <div *ngIf="filtrados.length === 0" class="message">
-      ⚠️ No hay productos disponibles.
-    </div>
+    <div class="productos-wrapper">
 
-    <div class="grid" [ngStyle]="{'grid-template-columns': 'repeat(' + numColumns + ', 1fr)'}">
-      <div *ngFor="let producto of filtrados" class="card" [style.width.px]="cardWidth">
-        <app-producto-card [producto]="producto"></app-producto-card>
+      <div *ngIf="filtrados.length === 0" class="message">
+        ⚠️ No hay productos disponibles.
       </div>
+
+      <!-- ✅ Nueva forma con FLEX -->
+      <div class="productos-flex">
+        <div
+          class="card"
+          *ngFor="let producto of filtrados"
+          (click)="verProducto(producto.id)"
+        >
+          <app-producto-card [producto]="producto"></app-producto-card>
+        </div>
+      </div>
+
+      <h2 class="title">
+        {{ isLoggedIn ? '🎉 Bienvenido al sistema de ventas' : '😊 Bienvenido :3' }}
+      </h2>
+      
+
     </div>
-
-    <h2 class="title">
-      {{ isLoggedIn ? '🎉 Bienvenido al sistema de ventas' : '😊 Bienvenido :3' }}
-    </h2>
-
-    <button *ngIf="isLoggedIn" (click)="handleLogout()">Cerrar sesión</button>
   </ng-template>
+
 </div>

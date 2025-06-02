@@ -1,0 +1,302 @@
+/* ========================== */
+/* 🎯 Encabezado y buscador */
+/* ========================== */
+.permiso-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.buscador-wrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: white;
+}
+
+.buscador {
+  border: none;
+  padding: 8px 12px;
+  outline: none;
+  width: 220px;
+  font-size: 14px;
+}
+
+.lupa {
+  background: #ffffff;
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.lupa:hover {
+  background-color: #ededed;
+}
+
+.mensaje-vacio {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #888;
+  text-align: center;
+  font-style: italic;
+}
+
+
+/* ========================== */
+/* ✅ Botón de crear permiso */
+/* ========================== */
+.crear {
+  background-color: #18c600;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* ========================== */
+/* 📋 Tabla de permisos */
+/* ========================== */
+.tabla-permisos {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.tabla-permisos th,
+.tabla-permisos td {
+  padding: 14px 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+
+
+
+/* ========================== */
+/* 🔘 Estados */
+/* ========================== */
+.estado.activo {
+  background-color: #a2fcd2;
+  padding: 6px 12px;
+  border-radius: 16px;
+  display: inline-block;
+  font-weight: bold;
+}
+
+/* ========================== */
+/* 🎨 Botones de acción */
+/* ========================== */
+.btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-right: 6px;
+}
+
+.btn.azul {
+  background-color: #2196f3;
+  color: white;
+}
+
+.btn.rojo {
+  background-color: #f44336;
+  color: white;
+}
+
+.btn.amarillo {
+  background-color: #ffeb3b;
+  color: black;
+}
+
+/* ========================== */
+/* 🪟 Modal flotante */
+/* ========================== */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* sombra oscura */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+.btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: background-color 0.2s ease;
+}
+
+.btn.crear {
+  background-color: #18c600;
+  color: white;
+}
+
+.btn.crear:hover {
+  background-color: #12a600;
+}
+
+.btn.cancelar {
+  background-color: #e0e0e0;
+  color: #222;
+}
+
+.btn.cancelar:hover {
+  background-color: #ccc;
+}
+
+.input-text {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  font-size: 15px;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input-text:focus {
+  border-color: #6a1b9a;
+}
+
+.input-textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 12px 16px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  font-size: 15px;
+  margin-bottom: 16px;
+  resize: vertical;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input-textarea:focus {
+  border-color: #6a1b9a;
+}
+
+
+
+
+.modal-content {
+  background-color: #ffffff;
+  padding: 36px;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  width: 400px;
+  max-width: 90%;
+  animation: aparecer 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.modal-content h2 {
+  margin-top: 0;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.modal-content h3 {
+  margin-top: 0;       /* ❌ Sin margen superior */
+  margin-bottom: 16px; /* ✅ Solo margen inferior */
+  padding: 0;          /* ❌ Elimina cualquier padding si lo hubiera */
+}
+
+.modal-content h3 {
+  color: #2196f3; /* Azul para diferenciar visualmente del modal de creación */
+}
+
+
+.btn.rojo {
+  background-color: #f44336;
+  color: white;
+}
+
+
+.modal-content input,
+.modal-content textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: 'Segoe UI', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.modal-content input:focus,
+.modal-content textarea:focus {
+  border-color: #6a1b9a;
+}
+
+.modal-content .acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.modal-content .acciones button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.modal-content .acciones .crear {
+  background-color: #18c600;
+  color: white;
+}
+
+.modal-content .acciones .cancelar {
+  background-color: #ccc;
+  color: #333;
+}
+
+.modal-content .acciones button:hover {
+  opacity: 0.9;
+}
+
+@keyframes aparecer {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+

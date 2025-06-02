@@ -11,7 +11,7 @@
 
 .search-wrapper {
   display: flex;
-  align-items: center;        /* 🔥 Centrado vertical */
+  align-items: center;
   gap: 16px;
   background-color: white;
   padding: 10px 16px;
@@ -21,7 +21,6 @@
   max-width: 900px;
 }
 
-/* Imagen del logo */
 .search-logo {
   width: 80px;
   height: 80px;
@@ -35,8 +34,6 @@
   height: 100%;
 }
 
-
-/* Estilo general del botón de sesión */
 .login-button {
   display: flex;
   align-items: center;
@@ -56,27 +53,67 @@
   background-color: #d5d5d5;
 }
 
-/* Ícono del botón */
 .login-icon {
   font-size: 18px;
   color: #4B3AB2;
 }
-
-
-
-
-
 
 /* ============================= */
 /* 📦 Vista de productos general */
 /* ============================= */
 
 .container {
-  margin: 0px;
-  padding: 24px;
+  display: flex;
+  flex-direction: column;
   background-color: #fff;
-  min-height: 100vh;
+  height: 100vh;
   overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.container::-webkit-scrollbar {
+  width: 15px;
+  background-color: #2a1919;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background: rgb(197, 25, 105);
+}
+
+app-top-bar {
+  display: block;
+  margin-bottom: 16px;
+}
+
+app-navbar {
+  display: block;
+  margin-bottom: 24px;
+}
+
+.productos-wrapper {
+  padding: 20px 28px;
+}
+
+/* ✅ NUEVO: uso de flex para productos */
+.productos-flex {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+
+.card {
+  cursor: pointer;
+  flex: 0 1 240px; /* tamaño base responsivo */
+  display: flex;
+  justify-content: center;
+}
+
+.card-container {
+  width: 100%;
+  max-width: 260px;
 }
 
 .loading {
@@ -84,17 +121,6 @@
   font-size: 18px;
   margin-top: 100px;
   color: #6a1b9a;
-}
-
-.grid {
-  display: grid;
-  gap: 16px;
-  margin-top: 20px;
-}
-
-.card {
-  display: flex;
-  justify-content: center;
 }
 
 .title {

@@ -1,0 +1,74 @@
+.dashboard-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 100vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 16px 8px; /* ← 16px arriba/abajo, 8px derecha/izquierda */
+}
+
+
+.dashboard-panel::-webkit-scrollbar {
+  width: 15px;
+  background-color: #2a1919;
+}
+
+.dashboard-panel::-webkit-scrollbar-thumb {
+  background: rgb(197, 25, 105);
+}
+
+
+.perfil-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.foto-perfil {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+}
+
+.usuario-texto {
+  display: flex;
+  flex-direction: column;
+}
+
+.opciones {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.opcion {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.opcion:hover {
+  background-color: #553c82;
+}
+
+.icono {
+  font-size: 20px;
+}
+
+.sin-opciones {
+  background-color: #fff2f2;
+  color: #a10000;
+  padding: 16px;
+  text-align: center;
+  border-radius: 10px;
+  margin-top: 12px;
+  font-weight: 500;
+}

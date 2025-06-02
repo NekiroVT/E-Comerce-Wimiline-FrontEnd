@@ -1,0 +1,14 @@
+<!-- panel-admin.component.html -->
+<div class="panel-admin-root">
+  <app-top-bar></app-top-bar>
+
+  <div class="panel-layout">
+    <div class="panel-sidebar">
+      <app-dashboard-panel (opcionSeleccionada)="cambiarComponente($event)"></app-dashboard-panel>
+    </div>
+
+    <div class="panel-contenido">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

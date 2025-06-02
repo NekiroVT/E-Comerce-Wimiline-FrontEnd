@@ -1,0 +1,73 @@
+.idioma-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.idioma-boton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #dcdcdc;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 20px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #111;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.idioma-boton:hover {
+  background-color: #c2c2c2;
+}
+
+.idioma-icono {
+  font-size: 20px;
+  background-color: #3498db;
+  color: white;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Menú animado */
+.idioma-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 8px;
+  z-index: 9999;
+  min-width: 200px;
+  overflow: hidden;
+
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.idioma-menu.activa {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.idioma-opcion {
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-size: 14px;
+  color: #333;
+}
+
+.idioma-opcion:hover {
+  background-color: #f6f6f6;
+}

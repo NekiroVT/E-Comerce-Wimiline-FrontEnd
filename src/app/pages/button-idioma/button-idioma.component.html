@@ -1,0 +1,11 @@
+<div class="idioma-wrapper" (mouseenter)="mostrar()" (mouseleave)="ocultar()">
+  <button class="idioma-boton">🌐 Idioma</button>
+  <div class="idioma-menu" [ngClass]="{ 'activa': mostrarMenu }">
+    <div
+      *ngFor="let idioma of idiomas"
+      class="idioma-opcion"
+      (click)="cambiarIdioma(idioma.codigo)">
+      {{ idioma.label }}
+    </div>
+  </div>
+</div>

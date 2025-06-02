@@ -1,0 +1,43 @@
+.panel-admin-root {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+app-top-bar {
+  flex-shrink: 0;
+}
+
+.panel-layout {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.panel-sidebar {
+  width: 260px;
+  background-color: #845ec2;
+  color: white;
+  overflow-y: auto;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.panel-contenido {
+  flex: 1;
+  background-color: #f2f2f2;
+  padding: 32px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.panel-contenido::-webkit-scrollbar {
+  width: 15px;
+  background-color: #2a1919;
+}
+
+.panel-contenido::-webkit-scrollbar-thumb {
+  background: rgb(197, 25, 105);
+}

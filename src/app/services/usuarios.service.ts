@@ -5,7 +5,7 @@ import { firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class UsuariosService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // 🔐 Login de usuario
   async login(username: string, password: string): Promise<any> {
@@ -183,35 +183,88 @@ export class UsuariosService {
 
   // 📜 Permisos
   async listarPermisos(): Promise<any[]> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-      'X-User-Permissions': 'usuarios:permisos.get'
-    });
-
-    try {
-      return await firstValueFrom(this.http.get<any[]>(PERMISOS_API_URL, { headers }));
-    } catch (error) {
-      console.error('❌ Error al listar permisos:', error);
-      return [];
-    }
-  }
-
-  async crearPermiso(payload: { name: string; description: string }): Promise<{ success: boolean; message: string }> {
   const token = localStorage.getItem('token');
   const headers = new HttpHeaders({
-    'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,
-    'X-User-Permissions': 'usuarios:permisos.create'
+    'X-User-Permissions': 'usuarios:permisos.get'
   });
 
   try {
-    await firstValueFrom(this.http.post(PERMISOS_API_URL, payload, { headers }));
-    return { success: true, message: '✅ Permiso creado correctamente' };
-  } catch (error: any) {
-    const mensaje = error?.error || '❌ Error al crear el permiso';
-    return { success: false, message: mensaje };
+    const permisos = await firstValueFrom(this.http.get<any[]>(PERMISOS_API_URL, { headers }));
+    // Ordena por fecha descendente
+    return permisos.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  } catch (error) {
+    console.error('❌ Error al listar permisos:', error);
+    return [];
   }
 }
+
+
+  async crearPermiso(payload: { name: string; description: string }): Promise<{ success: boolean; message: string }> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+      'X-User-Permissions': 'usuarios:permisos.create'
+    });
+
+
+
+    try {
+      await firstValueFrom(this.http.post(PERMISOS_API_URL, payload, { headers }));
+      return { success: true, message: '✅ Permiso creado correctamente' };
+    } catch (error: any) {
+      const mensaje = error?.error || '❌ Error al crear el permiso';
+      return { success: false, message: mensaje };
+    }
+  }
+
+  async actualizarPermiso(id: string, permiso: { name: string; description: string }): Promise<{ success: boolean; message: string }> {
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json',
+    'X-User-Permissions': 'usuarios:permisos.update'
+  });
+
+  try {
+    await firstValueFrom(
+      this.http.put(`${PERMISOS_API_URL}/${id}`, permiso, { headers })
+    );
+    return { success: true, message: '✅ Permiso actualizado correctamente' };
+  } catch (error: any) {
+    const msg = error?.error || '❌ Error al actualizar el permiso';
+    return { success: false, message: msg };
+  }
+}
+
+async eliminarPermiso(id: string): Promise<{ success: boolean; message: string }> {
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json',
+    'X-User-Permissions': 'usuarios:permisos.delete'
+  });
+
+  try {
+    const response = await firstValueFrom(
+      this.http.delete(`${PERMISOS_API_URL}/${id}`, {
+        headers,
+        responseType: 'text' // 👈 Esto es CLAVE
+      })
+    );
+
+    return { success: true, message: response || '✅ Permiso eliminado correctamente' };
+  } catch (error: any) {
+    console.error('❌ Error al eliminar permiso:', error);
+    const msg = typeof error?.error === 'string'
+      ? error.error
+      : error?.error?.message || '❌ Error al eliminar el permiso';
+    return { success: false, message: msg };
+  }
+}
+
+
+
 
 }

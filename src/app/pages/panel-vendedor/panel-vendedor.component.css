@@ -1,0 +1,48 @@
+.panel-vendedor-root {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Top bar arriba */
+app-top-bar {
+  flex-shrink: 0;
+}
+
+/* Layout con columnas debajo */
+.panel-layout {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* Columna izquierda - sidebar */
+.panel-sidebar {
+  width: 260px;
+  background-color: #ae98d1;
+  color: white;
+  overflow-y: auto;
+  flex-shrink: 0;
+  box-sizing: border-box;
+
+}
+
+/* Columna derecha - contenido principal */
+.panel-contenido {
+  flex: 1;
+  background-color: #e0e0e0;
+  padding: 32px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.panel-contenido::-webkit-scrollbar {
+  width: 15px;
+  background-color: #2a1919;
+}
+
+.panel-contenido::-webkit-scrollbar-thumb {
+  background: rgb(197, 25, 105);
+}

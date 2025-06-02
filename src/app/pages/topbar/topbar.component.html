@@ -1,0 +1,22 @@
+<!-- 🔍 Zona superior con logo + buscador -->
+<div class="top-search">
+  <div class="search-wrapper">
+    <img src="../../../assets/wwwwwwr.jpg" alt="Logo" class="search-logo" />
+
+    <app-buscador
+  [value]="searchQuery"
+  (valueChange)="onSearchChange($event)"
+  (submit)="onSearchSubmit()"
+></app-buscador>
+
+
+    <app-carrito></app-carrito>
+    <app-button-categorias></app-button-categorias>
+    <app-button-ayuda></app-button-ayuda>
+    <app-button-mode></app-button-mode>
+
+    
+
+    <app-button-perfil></app-button-perfil>
+  </div>
+</div>
