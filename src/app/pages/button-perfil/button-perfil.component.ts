@@ -74,7 +74,7 @@ export class ButtonPerfilComponent implements OnInit {
   ];
 
   opcionesAdmin = [
-    { permiso: 'ver:admin', titulo: 'Panel Administrativo', ruta: '/adminpanel' },
+    { permiso: 'ver:admin', titulo: 'Panel Administrativo', ruta: '/panel-admin' },
     { permiso: 'ver:admin.permisos', titulo: 'Gestionar Permisos', ruta: '/manage-users' },
     { permiso: 'ver:admin.productos', titulo: 'Gestionar Productos', ruta: '/manage-products' },
     { permiso: 'ver:reportes', titulo: 'Ver Reportes', ruta: '/reports' },

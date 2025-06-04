@@ -1,0 +1,112 @@
+<h2>Gestión de Usuarios</h2>
+
+<div class="usuario-header">
+  <div class="buscador-wrapper">
+    <input type="text" placeholder="Buscar" class="buscador" [(ngModel)]="filtro" (keydown.enter)="filtrarUsuarios()" />
+    <button class="lupa" (click)="filtrarUsuarios()">🔍</button>
+  </div>
+</div>
+
+<table class="tabla-usuarios">
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Estado</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let usuario of usuariosFiltrados">
+      <td>{{ usuario.username }}</td>
+      <td>{{ usuario.email }}</td>
+      <td>{{ usuario.status }}</td>
+      <td>
+        <button class="btn azul" (click)="verDetalles(usuario)">Ver</button>
+        <button class="btn amarillo" (click)="abrirModalEditar(usuario)">Editar</button>
+        <button class="btn azul" (click)="abrirModalPassword(usuario)">Contraseña</button>
+        <button class="btn rojo" (click)="abrirModalEliminar(usuario)">Eliminar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ⚠️ Si no hay resultados -->
+<div class="mensaje-vacio" *ngIf="usuariosFiltrados.length === 0">
+  ⚠️ No se encontraron usuarios.
+</div>
+
+<!-- 🔍 Modal Detalles -->
+<div class="modal" *ngIf="mostrarModalDetalles">
+  <div class="modal-content">
+    <h3>Detalles del Usuario</h3>
+    <p><strong>Username:</strong> {{ usuarioSeleccionado?.username }}</p>
+    <p><strong>Email:</strong> {{ usuarioSeleccionado?.email }}</p>
+    <p><strong>Estado:</strong> {{ usuarioSeleccionado?.status }}</p>
+    <p><strong>Nombre:</strong> {{ usuarioSeleccionado?.firstName }} {{ usuarioSeleccionado?.lastName }}</p>
+    <p><strong>Nacimiento:</strong> {{ usuarioSeleccionado?.birthdate | date:'dd-MM-yyyy' }}</p>
+    <p><strong>Verificado:</strong> {{ usuarioSeleccionado?.isVerified ? 'Sí' : 'No' }}</p>
+
+    <div class="acciones">
+      <button class="btn cancelar" (click)="cerrarModalDetalles()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ✏️ Modal Editar -->
+<div class="modal" *ngIf="mostrarModalEditar">
+  <div class="modal-content">
+    <h3>Editar Usuario</h3>
+
+    <input class="input-text" [(ngModel)]="formulario.username" placeholder="Username" />
+    <input class="input-text" [(ngModel)]="formulario.email" placeholder="Email" />
+    <input class="input-text" [(ngModel)]="formulario.firstName" placeholder="Nombre" />
+    <input class="input-text" [(ngModel)]="formulario.lastName" placeholder="Apellido" />
+    <input class="input-text" [(ngModel)]="formulario.birthdate" type="date" />
+    <input class="input-text" [(ngModel)]="formulario.profilePhotoUrl" placeholder="URL de foto" />
+
+    <select class="input-text" [(ngModel)]="formulario.status">
+      <option value="active">Activo</option>
+      <option value="pending">Pendiente</option>
+      <option value="banned">Baneado</option>
+    </select>
+
+    <p class="mensaje" *ngIf="mensajeEditar">⚠️ {{ mensajeEditar }}</p>
+
+    <div class="acciones">
+      <button class="btn crear" (click)="guardarCambios()">Guardar</button>
+      <button class="btn cancelar" (click)="cerrarModalEditar()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ❌ Modal Eliminar -->
+<div class="modal" *ngIf="mostrarModalEliminar">
+  <div class="modal-content">
+    <h3>¿Eliminar Usuario?</h3>
+    <p>❌ Esta acción no se puede deshacer.<br /><strong>{{ usuarioAEliminar?.username }}</strong></p>
+
+    <p class="mensaje" *ngIf="mensajeEliminar">⚠️ {{ mensajeEliminar }}</p>
+
+    <div class="acciones">
+      <button class="btn rojo" (click)="confirmarEliminar()">Eliminar</button>
+      <button class="btn cancelar" (click)="cerrarModalEliminar()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- 🔐 Modal Cambiar contraseña -->
+<div class="modal" *ngIf="mostrarModalPassword">
+  <div class="modal-content">
+    <h3>Cambiar Contraseña</h3>
+
+    <input class="input-text" type="password" [(ngModel)]="nuevaPassword" placeholder="Nueva contraseña" />
+
+    <p class="mensaje" *ngIf="mensajePassword">⚠️ {{ mensajePassword }}</p>
+
+    <div class="acciones">
+      <button class="btn crear" (click)="confirmarCambioPassword()">Confirmar</button>
+      <button class="btn cancelar" (click)="cerrarModalPassword()">Cancelar</button>
+    </div>
+  </div>
+</div>

@@ -95,48 +95,43 @@ export class OpccionPermisosComponent implements OnInit {
     this.mensajeEditar = resultado.message;
 
     if (resultado.success) {
-      // elimina directamente de la lista local
-      this.permisos = this.permisos.filter(p => p.id !== this.permisoAEliminar.id);
-      this.permisosFiltrados = this.permisos.filter(p =>
-        p.name.toLowerCase().includes(this.filtro.toLowerCase()) ||
-        p.description.toLowerCase().includes(this.filtro.toLowerCase())
-      );
-      this.cerrarModalEliminar();
+      this.cerrarModalEditar();
+      await this.cargarPermisos();
     }
-
   }
+
 
   mostrarModalEliminar = false;
-permisoAEliminar: any = null;
-mensajeEliminar = '';
+  permisoAEliminar: any = null;
+  mensajeEliminar = '';
 
-abrirModalEliminar(permiso: any) {
-  this.permisoAEliminar = permiso;
-  this.mensajeEliminar = '';
-  this.mostrarModalEliminar = true;
-}
-
-cerrarModalEliminar() {
-  this.mostrarModalEliminar = false;
-  this.permisoAEliminar = null;
-  this.mensajeEliminar = '';
-}
-
-
-async confirmarEliminar() {
-  if (!this.permisoAEliminar) return;
-
-  const resultado = await this.usuariosService.eliminarPermiso(this.permisoAEliminar.id);
-  this.mensajeEliminar = resultado.message;
-
-  if (resultado.success) {
-    // ✅ Elimina correctamente de ambas listas
-    this.permisos = this.permisos.filter(p => p.id !== this.permisoAEliminar.id);
-    this.permisosFiltrados = this.permisosFiltrados.filter(p => p.id !== this.permisoAEliminar.id);
-
-    this.cerrarModalEliminar(); // cierra y resetea todo
+  abrirModalEliminar(permiso: any) {
+    this.permisoAEliminar = permiso;
+    this.mensajeEliminar = '';
+    this.mostrarModalEliminar = true;
   }
-}
+
+  cerrarModalEliminar() {
+    this.mostrarModalEliminar = false;
+    this.permisoAEliminar = null;
+    this.mensajeEliminar = '';
+  }
+
+
+  async confirmarEliminar() {
+    if (!this.permisoAEliminar) return;
+
+    const resultado = await this.usuariosService.eliminarPermiso(this.permisoAEliminar.id);
+    this.mensajeEliminar = resultado.message;
+
+    if (resultado.success) {
+      // ✅ Elimina correctamente de ambas listas
+      this.permisos = this.permisos.filter(p => p.id !== this.permisoAEliminar.id);
+      this.permisosFiltrados = this.permisosFiltrados.filter(p => p.id !== this.permisoAEliminar.id);
+
+      this.cerrarModalEliminar(); // cierra y resetea todo
+    }
+  }
 
 
 

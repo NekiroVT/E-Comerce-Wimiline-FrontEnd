@@ -51,12 +51,11 @@ export class DashboardPanelComponent implements OnInit {
 
   opcionesAdmin = [
     { icono: '🏠', titulo: 'Home', ruta: '/admin/home', permiso: 'panel-admin:home' },
-    { icono: '👥', titulo: 'Gestión de Usuarios', ruta: '/admin/usuarios', permiso: 'panel-admin:usuarios' },
-    { icono: '🛡️', titulo: 'Gestión de Roles', ruta: '/admin/roles', permiso: 'panel-admin:roles' },
-    { icono: '🔐', titulo: 'Gestión de Permisos', ruta: 'permisos', permiso: 'panel-admin:permisos' }
-,
-    { icono: '🔄', titulo: 'Gestión de RolePerm', ruta: '/admin/roleperm', permiso: 'panel-admin:roleperm' },
-    { icono: '🔗', titulo: 'Gestión de UserRol', ruta: '/admin/userrol', permiso: 'panel-admin:userrol' },
+    { icono: '👥', titulo: 'Gestión de Usuarios', ruta: 'usuarios', permiso: 'panel-admin:usuarios' },
+    { icono: '🛡️', titulo: 'Gestión de Roles', ruta: 'roles', permiso: 'panel-admin:roles' },
+    { icono: '🔐', titulo: 'Gestión de Permisos', ruta: 'permisos', permiso: 'panel-admin:permisos' },
+    { icono: '🔄', titulo: 'Gestión de RolePerm', ruta: 'roleperms', permiso: 'panel-admin:roleperm' },
+    { icono: '🔗', titulo: 'Gestión de UserRol', ruta: 'userroles', permiso: 'panel-admin:userrol' },
     { icono: '📦', titulo: 'Gestión de Productos', ruta: '/admin/productos', permiso: 'panel-admin:productos' },
     { icono: '📁', titulo: 'Gestión de Categorías', ruta: '/admin/categorias', permiso: 'panel-admin:categorias' }
   ];

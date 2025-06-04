@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { USUARIOS_API_URL, ROLES_API_URL, PERMISOS_API_URL } from '../../environments/api';
+import { USUARIOS_API_URL, ROLES_API_URL, PERMISOS_API_URL, USERROLES_API_URL, ROLEPERMS_API_URL } from '../../environments/api';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -125,7 +125,11 @@ export class UsuariosService {
         Authorization: `Bearer ${token}`,
         'X-User-Permissions': 'usuarios:roles.get'
       });
-      return await firstValueFrom(this.http.get<any[]>(ROLES_API_URL, { headers }));
+
+      const roles = await firstValueFrom(this.http.get<any[]>(ROLES_API_URL, { headers }));
+
+      // 👇 Orden descendente por fecha de creación
+      return roles.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     } catch (error) {
       console.error('❌ Error al listar roles:', error);
       return [];
@@ -149,55 +153,69 @@ export class UsuariosService {
     }
   }
 
-  async eliminarRol(id: string): Promise<void> {
-    try {
-      const token = localStorage.getItem('token');
-      const headers = new HttpHeaders({
-        Authorization: `Bearer ${token}`,
-        'X-User-Permissions': 'usuarios:roles.delete'
-      });
+  async eliminarRol(id: string): Promise<{ success: boolean; message: string }> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'X-User-Permissions': 'usuarios:roles.delete',
+      'Content-Type': 'application/json'
+    });
 
-      await firstValueFrom(this.http.delete(`${ROLES_API_URL}/${id}`, { headers }));
-    } catch (error) {
-      console.error('❌ Error al eliminar rol:', error);
-      throw error;
+    try {
+      const response = await firstValueFrom(
+        this.http.delete(`${ROLES_API_URL}/${id}`, {
+          headers,
+          responseType: 'text' // 👈 backend devuelve texto plano
+        })
+      );
+
+      return { success: true, message: response || '✅ Rol eliminado correctamente' };
+    } catch (error: any) {
+      const msg = typeof error?.error === 'string'
+        ? error.error
+        : error?.error?.message || '❌ Error al eliminar el rol';
+      return { success: false, message: msg };
     }
   }
 
-  async actualizarRol(id: string, name: string, description = ''): Promise<any> {
-    try {
-      const token = localStorage.getItem('token');
-      const headers = new HttpHeaders({
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        'X-User-Permissions': 'usuarios:roles.update'
-      });
 
-      const body = { name, description };
-      return await firstValueFrom(this.http.put(`${ROLES_API_URL}/${id}`, body, { headers }));
-    } catch (error) {
-      console.error('❌ Error al actualizar rol:', error);
-      throw error;
+  async actualizarRol(id: string, payload: { name: string; description: string }): Promise<{ success: boolean; message: string }> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'X-User-Permissions': 'usuarios:roles.update'
+    });
+
+    try {
+      await firstValueFrom(this.http.put(`${ROLES_API_URL}/${id}`, payload, { headers }));
+      return { success: true, message: '✅ Rol actualizado correctamente' };
+    } catch (error: any) {
+      const msg = typeof error?.error === 'string'
+        ? error.error
+        : error?.error?.message || '❌ Error al actualizar el rol';
+      return { success: false, message: msg };
     }
   }
+
 
   // 📜 Permisos
   async listarPermisos(): Promise<any[]> {
-  const token = localStorage.getItem('token');
-  const headers = new HttpHeaders({
-    Authorization: `Bearer ${token}`,
-    'X-User-Permissions': 'usuarios:permisos.get'
-  });
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'X-User-Permissions': 'usuarios:permisos.get'
+    });
 
-  try {
-    const permisos = await firstValueFrom(this.http.get<any[]>(PERMISOS_API_URL, { headers }));
-    // Ordena por fecha descendente
-    return permisos.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-  } catch (error) {
-    console.error('❌ Error al listar permisos:', error);
-    return [];
+    try {
+      const permisos = await firstValueFrom(this.http.get<any[]>(PERMISOS_API_URL, { headers }));
+      // Ordena por fecha descendente
+      return permisos.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    } catch (error) {
+      console.error('❌ Error al listar permisos:', error);
+      return [];
+    }
   }
-}
 
 
   async crearPermiso(payload: { name: string; description: string }): Promise<{ success: boolean; message: string }> {
@@ -220,49 +238,306 @@ export class UsuariosService {
   }
 
   async actualizarPermiso(id: string, permiso: { name: string; description: string }): Promise<{ success: boolean; message: string }> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'X-User-Permissions': 'usuarios:permisos.update'
+    });
+
+    try {
+      await firstValueFrom(
+        this.http.put(`${PERMISOS_API_URL}/${id}`, permiso, { headers })
+      );
+      return { success: true, message: '✅ Permiso actualizado correctamente' };
+    } catch (error: any) {
+      const msg = error?.error || '❌ Error al actualizar el permiso';
+      return { success: false, message: msg };
+    }
+  }
+
+  async eliminarPermiso(id: string): Promise<{ success: boolean; message: string }> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'X-User-Permissions': 'usuarios:permisos.delete'
+    });
+
+    try {
+      const response = await firstValueFrom(
+        this.http.delete(`${PERMISOS_API_URL}/${id}`, {
+          headers,
+          responseType: 'text' // 👈 Esto es CLAVE
+        })
+      );
+
+      return { success: true, message: response || '✅ Permiso eliminado correctamente' };
+    } catch (error: any) {
+      console.error('❌ Error al eliminar permiso:', error);
+      const msg = typeof error?.error === 'string'
+        ? error.error
+        : error?.error?.message || '❌ Error al eliminar el permiso';
+      return { success: false, message: msg };
+    }
+  }
+
+  async listarRolesDeUsuario(userId: string): Promise<any[]> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'X-User-Permissions': 'usuarios:userroles.get.id'
+    });
+
+    try {
+      return await firstValueFrom(this.http.get<any[]>(`${USUARIOS_API_URL}/userroles/usuario/${userId}`, { headers }));
+    } catch (error: any) {
+      console.error('❌ Error al listar roles del usuario:', error);
+      throw error;
+    }
+  }
+
+  async asignarRolAUsuario(payload: { userId: string; roleId: string }): Promise<{ message: string }> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'X-User-Permissions': 'usuarios:userroles.create'
+    });
+
+    try {
+      const response = await firstValueFrom(
+        this.http.post(`${USERROLES_API_URL}`, payload, {
+          headers,
+          responseType: 'text' as 'json'
+        })
+      );
+      return { message: response as string };
+    } catch (error: any) {
+      console.error('❌ Error al asignar rol:', error);
+      throw error;
+    }
+  }
+
+
+
+  async eliminarRolDeUsuario(payload: { userId: string; roleId: string }): Promise<{ message: string }> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'X-User-Permissions': 'usuarios:userroles.delete'
+    });
+
+    try {
+      const response = await firstValueFrom(
+        this.http.request('delete', `${USERROLES_API_URL}`, {
+          body: payload,
+          headers,
+          responseType: 'text' as 'json'
+        })
+      );
+      return { message: response as string };
+    } catch (error: any) {
+      console.error('❌ Error al eliminar rol:', error);
+      throw error;
+    }
+  }
+
+
+  async listarTodosRolesUsuarios(): Promise<any[]> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'X-User-Permissions': 'usuarios:userroles.get'
+    });
+
+    try {
+      const roles = await firstValueFrom(
+        this.http.get<any[]>(`${USERROLES_API_URL}/listado`, { headers })
+      );
+
+      // 🔽 Ordena por fecha descendente
+      return roles.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    } catch (error) {
+      console.error('❌ Error al listar roles de usuarios:', error);
+      return [];
+    }
+  }
+
+
+  // 📋 Listar relaciones Rol - Permiso
+  // 📋 Listar relaciones Rol - Permiso
+  async listarRelacionesRolPermiso(): Promise<any[]> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'X-User-Permissions': 'usuarios:rolespermisos.get'
+    });
+
+    try {
+      const relaciones = await firstValueFrom(
+        this.http.get<any[]>(`${ROLEPERMS_API_URL}`, { headers })
+      );
+
+      // 🔽 Ordena por fecha descendente
+      return relaciones.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    } catch (error: any) {
+      console.error('❌ Error al listar roles-permisos:', error);
+      return [];
+    }
+  }
+
+
+  // ✅ Asignar permiso a rol
+  async asignarPermisoARol(payload: { roleId: string; permissionId: string }): Promise<{ message: string }> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'X-User-Permissions': 'usuarios:rolespermisos.create'
+    });
+
+    try {
+      const response = await firstValueFrom(
+        this.http.post(`${ROLEPERMS_API_URL}`, payload, {
+          headers,
+          responseType: 'text' as 'json'
+        })
+      );
+      return { message: response as string };
+    } catch (error: any) {
+      console.error('❌ Error al asignar permiso a rol:', error);
+      throw error;
+    }
+  }
+
+  // ❌ Eliminar permiso de rol
+  async eliminarPermisoDeRol(payload: { roleId: string; permissionId: string }): Promise<{ message: string }> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'X-User-Permissions': 'usuarios:rolespermisos.delete'
+    });
+
+    try {
+      const response = await firstValueFrom(
+        this.http.request('delete', `${ROLEPERMS_API_URL}`, {
+          headers,
+          body: payload,
+          responseType: 'text' as 'json'
+        })
+      );
+      return { message: response as string };
+    } catch (error: any) {
+      console.error('❌ Error al eliminar permiso de rol:', error);
+      throw error;
+    }
+  }
+
+  async listarUsuariosTabla(): Promise<any[]> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'X-User-Permissions': 'usuarios:usuarios.get'
+    });
+
+    return await firstValueFrom(this.http.get<any[]>(`${USUARIOS_API_URL}/listado-simple`, { headers }));
+  }
+
+
+  // 🔹 Obtener detalles de un usuario por ID
+  async obtenerUsuarioPorId(id: string): Promise<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'X-User-Permissions': 'usuarios:usuarios.get.id'
+    });
+
+    return await firstValueFrom(this.http.get<any>(`${USUARIOS_API_URL}/${id}`, { headers }));
+  }
+
+  async eliminarUsuario(id: string): Promise<{ success: boolean; message: string }> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'X-User-Permissions': 'usuarios:usuarios.delete'
+    });
+
+    try {
+      const response = await firstValueFrom(
+        this.http.delete(`${USUARIOS_API_URL}/${id}`, {
+          headers,
+          responseType: 'text' // ⚠️ si devuelves un String plano
+        })
+      );
+
+      return { success: true, message: response || '✅ Usuario eliminado correctamente' };
+    } catch (error: any) {
+      const msg = typeof error?.error === 'string'
+        ? error.error
+        : error?.error?.message || '❌ Error al eliminar el usuario';
+      return { success: false, message: msg };
+    }
+  }
+
+  async actualizarUsuario(id: string, payload: any): Promise<{ success: boolean; message: string }> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'X-User-Permissions': 'usuarios:usuarios.update'
+    });
+
+    try {
+      await firstValueFrom(this.http.put(`${USUARIOS_API_URL}/${id}`, payload, { headers }));
+      return { success: true, message: '✅ Usuario actualizado correctamente' };
+    } catch (error: any) {
+      const msg = error?.error || '❌ Error al actualizar el usuario';
+      return { success: false, message: msg };
+    }
+  }
+
+
+
+async cambiarPassword(id: string, nuevaPassword: string): Promise<{ success: boolean; message: string }> {
   const token = localStorage.getItem('token');
+  const permisos = localStorage.getItem('permisos') || '';
+
   const headers = new HttpHeaders({
     Authorization: `Bearer ${token}`,
     'Content-Type': 'application/json',
-    'X-User-Permissions': 'usuarios:permisos.update'
+    'X-User-Permissions': permisos
   });
 
   try {
-    await firstValueFrom(
-      this.http.put(`${PERMISOS_API_URL}/${id}`, permiso, { headers })
-    );
-    return { success: true, message: '✅ Permiso actualizado correctamente' };
+    await firstValueFrom(this.http.put(`${USUARIOS_API_URL}/${id}/cambiar-password-bypass`, {
+      nuevaPassword
+    }, { headers }));
+
+    return { success: true, message: '✅ Contraseña actualizada correctamente' };
   } catch (error: any) {
-    const msg = error?.error || '❌ Error al actualizar el permiso';
+    const msg = error?.error || '❌ Error al cambiar la contraseña';
     return { success: false, message: msg };
   }
 }
 
-async eliminarPermiso(id: string): Promise<{ success: boolean; message: string }> {
-  const token = localStorage.getItem('token');
-  const headers = new HttpHeaders({
-    Authorization: `Bearer ${token}`,
-    'Content-Type': 'application/json',
-    'X-User-Permissions': 'usuarios:permisos.delete'
-  });
 
-  try {
-    const response = await firstValueFrom(
-      this.http.delete(`${PERMISOS_API_URL}/${id}`, {
-        headers,
-        responseType: 'text' // 👈 Esto es CLAVE
-      })
-    );
 
-    return { success: true, message: response || '✅ Permiso eliminado correctamente' };
-  } catch (error: any) {
-    console.error('❌ Error al eliminar permiso:', error);
-    const msg = typeof error?.error === 'string'
-      ? error.error
-      : error?.error?.message || '❌ Error al eliminar el permiso';
-    return { success: false, message: msg };
-  }
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

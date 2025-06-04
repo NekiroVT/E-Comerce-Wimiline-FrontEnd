@@ -34,7 +34,11 @@
       <h2 class="title">
         {{ isLoggedIn ? '🎉 Bienvenido al sistema de ventas' : '😊 Bienvenido :3' }}
       </h2>
-      
+      <button *ngIf="isLoggedIn" class="cerrar-sesion" (click)="handleLogout()">
+  🚪 Cerrar sesión
+</button>
+
+
 
     </div>
   </ng-template>

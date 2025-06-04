@@ -47,8 +47,9 @@ export class LoginComponent implements OnInit {
   }
 
   handleCrearCuenta() {
-    this.router.navigate(['/email']);
-  }
+  localStorage.setItem('registroDesdeLogin', 'activado'); // 🚨 Activa palanca
+  this.router.navigate(['/email']);
+}
 
   handleSeguirSinCuenta() {
     this.router.navigate(['/home']);

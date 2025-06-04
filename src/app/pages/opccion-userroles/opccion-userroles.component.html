@@ -1,0 +1,96 @@
+<h2>Gestión de Roles por Usuario</h2>
+
+<!-- 🔍 Filtro con lupa -->
+<div class="permiso-header">
+  <div class="buscador-wrapper">
+    <input
+      type="text"
+      class="buscador"
+      placeholder="Buscar"
+      [(ngModel)]="filtro"
+      (keydown.enter)="filtrarRoles()" />
+    <button class="lupa" (click)="filtrarRoles()">🔍</button>
+  </div>
+
+  <button class="crear" (click)="abrirModal()">Asignar Rol</button>
+</div>
+
+<!-- 🧾 Tabla -->
+<table class="tabla-permisos">
+  <thead>
+    <tr>
+      <th>Usuario</th>
+      <th>Rol</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let rol of userRolesFiltrados">
+      <td>{{ rol.username }}</td>
+      <td>{{ rol.roleName }}</td>
+      <td>
+        <button class="btn rojo" (click)="abrirModalEliminar(rol.userId, rol.roleId, rol.username, rol.roleName)">
+  Eliminar
+</button>
+
+
+
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ⚠️ Mensaje si está vacío -->
+<div class="mensaje-vacio" *ngIf="userRolesFiltrados.length === 0">
+  ⚠️ No se encontraron roles asignados.
+</div>
+
+<p class="mensaje" *ngIf="mensaje">{{ mensaje }}</p>
+
+<!-- 🎯 Modal Asignar -->
+<!-- 🎯 Modal Asignar -->
+<div class="modal" *ngIf="mostrarModal">
+  <div class="modal-content">
+    <h3>Asignar Rol</h3>
+
+    <!-- 🔽 Usuarios (por ID) -->
+<select [(ngModel)]="nuevoRol.userId" class="input-text">
+  <option [value]="''" disabled selected>Selecciona un usuario</option>
+  <option *ngFor="let u of usuarios" [value]="u.id">{{ u.username }}</option>
+</select>
+
+<!-- 🔽 Roles (por ID) -->
+<select [(ngModel)]="nuevoRol.roleId" class="input-text">
+  <option [value]="''" disabled selected>Selecciona un rol</option>
+  <option *ngFor="let r of roles" [value]="r.id">{{ r.name }}</option>
+</select>
+
+
+
+    <p class="mensaje">{{ mensaje }}</p>
+    <div class="acciones">
+      <button class="btn crear" (click)="asignarRol()">Asignar</button>
+      <button class="btn cancelar" (click)="cerrarModal()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- 🗑️ Modal Eliminar -->
+<div class="modal" *ngIf="mostrarModalEliminar">
+  <div class="modal-content">
+    <h3>¿Eliminar este rol del usuario?</h3>
+    <p class="mensaje">
+  ❌ Esta acción no se puede deshacer.<br />
+  Usuario: <strong>{{ nombreUsuario }}</strong><br />
+  Rol: <strong>{{ nombreRol }}</strong>
+</p>
+
+
+    <p class="mensaje" *ngIf="mensajeEliminar">⚠️ {{ mensajeEliminar }}</p>
+    <div class="acciones">
+      <button class="btn rojo" (click)="confirmarEliminar()">Eliminar</button>
+      <button class="btn cancelar" (click)="cerrarModalEliminar()">Cancelar</button>
+    </div>
+  </div>
+</div>
