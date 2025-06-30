@@ -3,30 +3,15 @@
     <!-- 📸 Imagen principal -->
     <img
       class="imagen"
-      [src]="producto.imagenes?.[0]?.urlImagen || '../../../assets/Nekoe.jpg'"
+      [src]="producto.urlImagenPrincipal || '../../../assets/Nekoe.jpg'"
       alt="Producto"
     />
 
     <div class="contenido">
       <!-- 🏷️ Nombre y precio -->
       <h3 class="nombre">{{ producto.nombre || 'Nombre no disponible' }}</h3>
-      <p class="precio">S/. {{ producto.precio || '0.00' }}</p>
-      <p class="descripcion">{{ producto.descripcion || 'Descripción no disponible' }}</p>
-
-      <!-- 🧬 Variaciones -->
-      <p class="seccion">
-        Variaciones: {{ getVariaciones() }}
-      </p>
-
-      <!-- ⚙️ Especificaciones -->
-      <div class="especificaciones" *ngIf="producto.especificaciones?.length > 0; else noEsp">
-        <p class="especificacion" *ngFor="let esp of producto.especificaciones">
-          🔹 {{ esp.clave }}: {{ esp.valor }}
-        </p>
-      </div>
-      <ng-template #noEsp>
-        <p class="seccion">No hay especificaciones disponibles.</p>
-      </ng-template>
+      <p class="precio">S/. {{ producto.precioPrincipal?.toFixed(2) || '0.00' }}</p>
+      <p class="stock">📦 Stock: {{ producto.stockTotal }}</p>
     </div>
   </div>
 </div>

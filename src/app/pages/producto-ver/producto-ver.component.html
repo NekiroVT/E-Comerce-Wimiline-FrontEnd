@@ -1,37 +1,117 @@
-<div class="detalle-container">
-  <!-- 📸 Galería -->
-  <div class="galeria">
-    <img class="imagen-principal" [src]="imagenSeleccionada" alt="Producto" />
-    <div class="miniaturas">
-      <img
-        *ngFor="let img of producto.imagenes"
-        [src]="img.urlImagen"
-        class="miniatura"
-        (click)="imagenSeleccionada = img.urlImagen"
-        [class.activa]="imagenSeleccionada === img.urlImagen"
-      />
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+/>
+
+<div class="container">
+  <!-- 🧭 Cabecera -->
+  <app-top-bar></app-top-bar>
+  <app-navbar></app-navbar>
+
+  <!-- 📦 Contenido del producto -->
+  <div class="detalle-container" *ngIf="producto">
+    <!-- 📸 Galería principal -->
+    <div class="galeria">
+      <img class="imagen-principal" [src]="imagenSeleccionada" alt="Producto" />
+      <div class="miniaturas">
+        <img *ngFor="let img of todasLasImagenes" [src]="img.urlImagen" class="miniatura"
+          (click)="imagenSeleccionada = img.urlImagen" [class.activa]="imagenSeleccionada === img.urlImagen" />
+      </div>
+    </div>
+
+    <!-- 🧾 Info producto -->
+    <div class="info-producto">
+      <h2>{{ producto.nombre }}</h2>
+      <p class="descripcion">{{ producto.descripcion }}</p>
+
+      <!-- 📂 Categorías -->
+      <div class="seccion" *ngIf="producto.categorias?.length">
+        <strong>Categorías:</strong>
+        <ul>
+          <li *ngFor="let cat of producto.categorias">📂 {{ cat }}</li>
+        </ul>
+      </div>
+
+      <!-- 🔧 Especificaciones -->
+      <div class="seccion" *ngIf="producto.especificaciones?.length">
+        <strong>Especificaciones:</strong>
+        <ul>
+          <li *ngFor="let esp of producto.especificaciones">
+            🔧 {{ esp.clave }}: {{ esp.valor }}
+          </li>
+        </ul>
+      </div>
+
+      <!-- 💰 Mostrar precio y stock seleccionados -->
+<div class="seccion precio-stock" *ngIf="precioActual !== null && stockActual !== null">
+  <div class="precio-stock-box">
+    <div class="info-item">
+  <i class="fas fa-coins icon-precio"></i>
+  <strong>Precio:</strong> S/. {{ precioActual }}
+</div>
+<div class="info-item">
+  <i class="fas fa-boxes-stacked icon-stock"></i>
+  <strong>Stock:</strong> {{ stockActual }}
+</div>
+
+  </div>
+</div>
+
+
+      <!-- 🎛️ Atributos agrupados -->
+      <div class="seccion" *ngIf="valoresPorClave">
+        <ng-container *ngFor="let clave of clavesDisponibles">
+          <div class="atributo">
+            <strong>{{ clave }} :</strong>
+            <button *ngFor="let valor of valoresPorClave[clave]" class="valor-btn"
+              [class.seleccionado]="valoresSeleccionados[clave] === valor" (click)="seleccionarValor(clave, valor)">
+              {{ valor }}
+            </button>
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- 🛒 Selector de cantidad -->
+<div class="seccion cantidad-carrito" *ngIf="stockActual !== null && stockActual > 0">
+  <strong>Cantidad:</strong>
+
+  <!-- Si ya está en el carrito: mostrar control -->
+  <div *ngIf="itemExistente; else botonAgregar" class="cantidad-control">
+    <button (click)="disminuirCantidad()" [disabled]="cantidadSeleccionada <= 1">−</button>
+
+    <select [(ngModel)]="cantidadSeleccionada" (change)="onCantidadCambiada()">
+      <option *ngFor="let n of cantidadOpciones" [value]="n">{{ n }}</option>
+    </select>
+
+    <button (click)="aumentarCantidad()" [disabled]="cantidadSeleccionada >= stockActual">+</button>
+
+    <button class="ir-carrito" routerLink="/carrito">
+      <i class="fas fa-shopping-cart"></i> Ir al carrito
+    </button>
+  </div>
+
+  <!-- Si NO está en el carrito: mostrar botón Añadir -->
+  <ng-template #botonAgregar>
+    <select [(ngModel)]="cantidadSeleccionada" class="cantidad-selector">
+      <option *ngFor="let n of cantidadOpciones" [value]="n">{{ n }}</option>
+    </select>
+
+    <button class="btn-carrito" (click)="agregarAlCarrito()">
+      <i class="fas fa-cart-plus"></i> Añadir
+    </button>
+  </ng-template>
+</div>
+
+
+
+      <!-- 💰 Mostrar precio y stock seleccionados -->
+      
     </div>
   </div>
 
-  <!-- 🧾 Info producto -->
-  <div class="info-producto">
-    <h2>{{ producto.nombre }}</h2>
-    <p class="precio">S/. {{ producto.precio }}</p>
-    <p class="valoracion">⭐️ {{ producto.valoracion }} / 5</p>
-    <p class="descripcion">{{ producto.descripcion }}</p>
-
-    <div class="seccion">
-      <strong>Variaciones:</strong>
-      {{ getVariaciones() || 'No hay variaciones disponibles.' }}
-    </div>
-
-    <div class="seccion" *ngIf="producto.especificaciones?.length > 0; else noEsp">
-      <p *ngFor="let esp of producto.especificaciones">
-        🔹 {{ esp.clave }}: {{ esp.valor }}
-      </p>
-    </div>
-    <ng-template #noEsp>
-      <p class="seccion">No hay especificaciones disponibles.</p>
-    </ng-template>
+  <!-- 🔄 Cargando -->
+  <div *ngIf="!producto" class="cargando">
+    🔄 Cargando producto...
   </div>
 </div>

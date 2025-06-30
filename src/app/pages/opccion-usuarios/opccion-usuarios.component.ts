@@ -102,20 +102,29 @@ export class OpccionUsuariosComponent implements OnInit {
     }
   }
 
-  abrirModalEditar(usuario: any) {
-    this.usuarioSeleccionado = { ...usuario };
+  async abrirModalEditar(usuario: any) {
+  try {
+    const res = await this.usuariosService.obtenerUsuarioPorId(usuario.id);
+
+    this.usuarioSeleccionado = res;
     this.formulario = {
-      username: usuario.username,
-      email: usuario.email,
-      firstName: usuario.firstName,
-      lastName: usuario.lastName,
-      birthdate: usuario.birthdate,
-      profilePhotoUrl: usuario.profilePhotoUrl,
-      status: usuario.status
+      username: res.username,
+      email: res.email,
+      firstName: res.firstName,
+      lastName: res.lastName,
+      birthdate: res.birthdate,
+      profilePhotoUrl: res.profilePhotoUrl,
+      status: res.status
     };
+
     this.mensajeEditar = '';
     this.mostrarModalEditar = true;
+
+  } catch (error) {
+    console.error('❌ Error al obtener detalles del usuario:', error);
   }
+}
+
 
   cerrarModalEditar() {
     this.mostrarModalEditar = false;

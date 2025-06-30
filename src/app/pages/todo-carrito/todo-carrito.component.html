@@ -1,0 +1,69 @@
+<div class="carrito-wrapper">
+    <div class="carrito-header">
+        <h2>Carrito de Compras ({{ carritoPoco.length }})</h2>
+        <div class="acciones">
+            <label>
+                <input type="checkbox" (change)="seleccionarTodos()" />
+                Seleccionar todos los productos
+            </label>
+            
+        </div>
+    </div>
+
+    <div class="carrito-items-container">
+        <div *ngFor="let item of carritoPoco" class="carrito-item">
+            <div class="carrito-item-flex">
+                <!-- Checkbox -->
+                <input type="checkbox" [checked]="item.seleccionado" (change)="onSeleccionarIndividual(item)" />
+
+
+                <!-- Imagen -->
+                <div class="imagen-columna">
+                    <img *ngIf="item.imagenUrl" [src]="item.imagenUrl" alt="Imagen" class="carrito-item-imagen" />
+                </div>
+
+                <!-- Detalles -->
+                <div class="detalles-columna">
+                    <p class="carrito-item-nombre">{{ item.nombreProducto }}</p>
+                    <p class="carrito-item-precio">PEN {{ item.precioUnitario | number:'1.2-2' }}</p>
+                    <p class="carrito-item-variantes">
+                        {{ item.valorClave1 }} / {{ item.valorClave2 }}
+                    </p>
+                    <p class="carrito-item-total"><strong>Total: PEN {{ item.total | number:'1.2-2' }}</strong></p>
+
+                    <p class="carrito-item-user">
+                        {{ item.firstName }} {{ item.lastName }} <span class="flecha-derecha">›</span>
+                    </p>
+
+                </div>
+
+                <!-- Controles cantidad -->
+
+                <!-- Acciones -->
+                <div class="carrito-item-derecha">
+                    <div class="fila-superior">
+  <button class="btn-icono" (click)="guardarFavoritos(item)">
+    <i class="fas fa-heart icono-favorito"></i>
+  </button>
+
+  <button class="btn-icono" (click)="borrarItem(item)">
+    <i class="fas fa-trash icono-basura"></i>
+  </button>
+</div>
+
+
+                    <div class="fila-inferior">
+                        <button class="btn-cantidad" (click)="disminuirCantidad(item)"
+                            [disabled]="item.cantidad <= 1">−</button>
+                        <span>{{ item.cantidad }}</span>
+                        <button class="btn-cantidad" (click)="aumentarCantidad(item)"
+                            [disabled]="item.cantidad >= item.stock">+</button>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>

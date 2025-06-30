@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TopBarComponent } from '../../pages/topbar/topbar.component';
 import { DashboardPanelComponent } from '../dashboard-panel/dashboard-panel.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-panel-vendedor',
   standalone: true,
-  imports: [CommonModule, TopBarComponent, DashboardPanelComponent],
+  imports: [CommonModule, RouterModule, TopBarComponent, DashboardPanelComponent],
   templateUrl: './panel-vendedor.component.html',
   styleUrls: ['./panel-vendedor.component.css']
 })

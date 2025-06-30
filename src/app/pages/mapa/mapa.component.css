@@ -1,0 +1,28 @@
+.map-container {
+  position: relative;
+  border: 2px solid #007bff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.custom-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -130%); /* Centrar y subir encima del pin */
+  background: #fff;
+  border: 1px solid #007bff;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 12px;
+  text-align: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  pointer-events: none; /* Para que no interfiera */
+}
+
+.custom-label strong {
+  font-size: 14px;
+  color: #007bff;
+}

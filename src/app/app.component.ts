@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
+import { iniciarTemporizadorDeExpiracion } from './utils/jwt-utils'; // ruta ajusta si es necesario
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,14 @@ import { RouterOutlet } from '@angular/router';
   imports: [RouterOutlet],
   template: '<router-outlet></router-outlet>'
 })
-export class AppComponent {}
+export class AppComponent implements OnInit {
+
+  constructor(private router: Router) {}
+
+  ngOnInit(): void {
+    const refresh = localStorage.getItem('refreshToken');
+    if (refresh) {
+      iniciarTemporizadorDeExpiracion(refresh, this.router);
+    }
+  }
+}

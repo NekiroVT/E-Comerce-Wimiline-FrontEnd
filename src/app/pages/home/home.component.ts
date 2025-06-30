@@ -90,6 +90,6 @@ export class HomeComponent implements OnInit {
   }
 
   verProducto(id: string) {
-    this.router.navigate([`/selectproducto/${id}.html`]);
+    this.router.navigate([`/selectproducto/${id}`]);
   }
 }

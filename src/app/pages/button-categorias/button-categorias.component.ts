@@ -13,7 +13,6 @@ export class ButtonCategoriasComponent implements OnInit {
   mostrarMenu: boolean = false;
   categorias: any[] = [];
   cargando: boolean = false;
-
   private timeoutId: any;
 
   constructor(private categoriasService: CategoriasService) {}
@@ -41,6 +40,6 @@ export class ButtonCategoriasComponent implements OnInit {
 
   handleClick(categoria: any): void {
     console.log('➡️ Clic en categoría:', categoria.nombre);
-    // Aquí podrías navegar con router si quieres
+    // Opcional: navega con Router si lo deseas
   }
 }

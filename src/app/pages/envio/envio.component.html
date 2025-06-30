@@ -1,0 +1,103 @@
+<div class="envio-container">
+
+  <!-- 🚩 Paso 1: Selección de tipo -->
+  <div *ngIf="modo === 'seleccion'" class="opciones-envio">
+  <h3>¿Cómo quieres tu envío?</h3>
+  <div class="grupo-botones">
+    <button (click)="elegirDomicilio()">Envío a Domicilio</button>
+    <button (click)="elegirTolva()">Envío a Tolva</button>
+  </div>
+</div>
+
+
+  <!-- 🚩 Paso 2: Lista de direcciones -->
+  <div *ngIf="modo === 'domicilio'" class="lista-direcciones">
+    <h3>Elige tu dirección de entrega</h3>
+
+    <button (click)="nuevaDireccion()">➕ Nueva Dirección</button>
+
+    <div *ngIf="direcciones.length === 0">
+      <p>No tienes direcciones registradas.</p>
+    </div>
+
+    <div *ngFor="let dir of direcciones" class="direccion-card">
+      <label class="direccion-item">
+        <input
+          type="radio"
+          name="direccion"
+          [value]="dir.id"
+          [(ngModel)]="direccionSeleccionadaId" />
+        <span class="direccion-text">
+          {{ dir.direccion }} — {{ dir.referencia }}
+        </span>
+        <button type="button" (click)="verEnMapa(dir)">🗺️ Ver Mapa</button>
+      </label>
+    </div>
+
+    <button (click)="confirmarDireccion()" [disabled]="!direccionSeleccionadaId">
+      Continuar con esta dirección
+    </button>
+  </div>
+
+  <!-- 🚩 Paso 3: Formulario para crear -->
+  <!-- 🚩 Paso 3: Formulario para crear -->
+<div *ngIf="modo === 'crear'" class="form-direccion">
+  <h3>Crear Nueva Dirección</h3>
+
+  <form [formGroup]="formDireccion" (ngSubmit)="guardarDireccion()">
+
+    <label>Dirección
+      <input formControlName="direccion" placeholder="Ej: Jr. Los Olivos 123" />
+    </label>
+
+    <!-- 🚫 Código Postal YA NO SE MUESTRA -->
+    <!-- 🚫 Latitud YA NO SE MUESTRA -->
+    <!-- 🚫 Longitud YA NO SE MUESTRA -->
+
+    <label>Referencia
+      <input formControlName="referencia" placeholder="Ej: Puerta azul" />
+    </label>
+
+    <label>Destinatario
+      <input formControlName="destinatario" placeholder="Ej: Elias Crack" />
+    </label>
+
+    <button type="button" (click)="abrirSelectorUbicacion()">
+      📍 {{ formDireccion.value.latitud && formDireccion.value.longitud ? 'Cambiar Ubicación' : 'Elegir Ubicación' }}
+    </button>
+
+    <button type="submit" [disabled]="formDireccion.invalid">Guardar Dirección</button>
+
+  </form>
+</div>
+
+
+  <!-- 🚩 Paso 4: Vista de mapa para ver -->
+  <div *ngIf="modo === 'ver-mapa'" class="ver-mapa-container">
+    <app-mapa
+      [latitud]="direccionAMostrarEnMapa.latitud"
+      [longitud]="direccionAMostrarEnMapa.longitud"
+      [direccion]="direccionAMostrarEnMapa.direccion">
+    </app-mapa>
+
+    <button class="btn-volver" (click)="volverALista()">⬅️ Volver</button>
+  </div>
+
+  <!-- 🚩 Paso 5: Selector de ubicación -->
+  <div *ngIf="modo === 'elegir-ubicacion'" class="selector-ubicacion-container">
+    <h3>Selecciona la Ubicación</h3>
+
+    <google-map
+      height="400px"
+      width="100%"
+      [center]="center"
+      [zoom]="15"
+      (mapClick)="marcarUbicacion($event)">
+      <map-marker *ngIf="markerPosition" [position]="markerPosition"></map-marker>
+    </google-map>
+
+    <button (click)="confirmarUbicacion()">✅ Confirmar Ubicación</button>
+    <button (click)="cerrarSelectorUbicacion()">❌ Cancelar</button>
+  </div>
+
+</div>

@@ -1,27 +1,42 @@
-<!-- Botón estilo 'Cuenta' para abrir modal -->
-<button class="boton-carrito-header" (click)="abrirModal()">
-  <span class="icono">🛒</span>
-  
-</button>
+<div class="carrito-wrapper" (mouseenter)="mostrar()" (mouseleave)="ocultar()">
+  <button class="carrito-boton">
+    <!-- Usar icono de carrito de FontAwesome -->
+    <span class="carrito-icono"><i class="fas fa-shopping-cart"></i></span> 
+    CARRITO
+  </button>
 
-<!-- Modal -->
-<div class="modal-fondo" *ngIf="mostrarModal" (click)="cerrarModal()">
-  <div class="modal-contenido" (click)="$event.stopPropagation()">
-    <h3>🛒 Mi Carrito</h3>
+  <div class="carrito-menu" [ngClass]="{ 'activa': mostrarCarritoMenu }">
+    <ng-container *ngIf="!cargando && carritoPoco.length > 0; else vacio">
+      <div class="carrito-items-container">
+        <div *ngFor="let item of carritoPoco" class="carrito-item">
+          <div class="carrito-item-flex">
+            <div class="imagen-columna">
+              <img *ngIf="item.imagenUrl" [src]="item.imagenUrl" alt="Imagen del producto" class="carrito-item-imagen" />
+            </div>
+            <div class="detalles-columna">
+              <p class="carrito-item-precio">PEN {{ item.precioUnitario | number:'1.2-2' }} </p> <!-- Precio unitario con 2 decimales -->
+              <p class="carrito-item-total">Total: PEN {{ item.total | number:'1.2-2' }} </p> <!-- Total con 2 decimales -->
+              <div class="carrito-item-controles">
+                <button class="btn-cantidad" (click)="disminuirCantidad(item)" [disabled]="item.cantidad <= 1">−</button>
+                <span>{{ item.cantidad }}</span>
+                <button class="btn-cantidad" (click)="aumentarCantidad(item)" [disabled]="item.cantidad >= item.stock">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
 
-    <div *ngIf="productos.length === 0" class="mensaje">Tu carrito está vacío.</div>
+    <ng-template #vacio>
+      <div class="carrito-opcion sin-dato">
+        ❌ No hay productos en el carrito
+      </div>
+    </ng-template>
 
-    <ul *ngIf="productos.length > 0" class="lista-productos">
-      <li *ngFor="let producto of productos" class="producto">
-        <span>{{ producto.nombre }}</span>
-        <span>{{ producto.precio | currency: 'PEN' }}</span>
-        <button (click)="eliminarProducto(producto.id)" class="btn-x">❌</button>
-      </li>
-    </ul>
-
-    <button *ngIf="productos.length > 0" (click)="vaciarCarrito()" class="vaciar">
-      Vaciar carrito
-    </button>
-    <button (click)="cerrarModal()" class="cerrar">Cerrar</button>
+    <div class="carrito-footer">
+      <button class="btn-ir-carrito" (click)="verCarrito()"><span class="carrito-XD"><i class="fas fa-shopping-cart"></i></span> Ir al carrito</button>
+      <button class="btn-pagar" (click)="pagar()">Pagar</button>
+      
+    </div>
   </div>
 </div>

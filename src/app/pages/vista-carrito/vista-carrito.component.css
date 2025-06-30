@@ -1,0 +1,28 @@
+.vista-carrito-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.contenido-flex-carrito {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  padding: 20px;
+  gap: 20px;
+  background-color: #f8f8f8;
+}
+
+/* Columna izquierda: carrito */
+.todo-carrito-container {
+  flex: 2;
+  overflow-y: auto;
+  border-radius: 12px;
+  box-shadow: none;               /* 👈 quitar sombra si no la querés */
+}
+
+/* Columna derecha: resumen de pago */
+.pago-resumen-container {
+  flex: 1;
+  max-width: 600px;
+}

@@ -1,25 +1,43 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { USUARIOS_API_URL, ROLES_API_URL, PERMISOS_API_URL, USERROLES_API_URL, ROLEPERMS_API_URL } from '../../environments/api';
+import { USUARIOS_API_URL, ROLES_API_URL, PERMISOS_API_URL, USERROLES_API_URL, ROLEPERMS_API_URL, AUTH_API_URL } from '../../environments/api';
 import { firstValueFrom } from 'rxjs';
+import { Observable } from 'rxjs';
+import { of } from 'rxjs';
+import { Router } from '@angular/router';
+import { iniciarTemporizadorDeExpiracion } from '../utils/jwt-utils'; // ajusta la ruta si es distinto
+
+
+
+
 
 @Injectable({ providedIn: 'root' })
 export class UsuariosService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
+
 
   // 🔐 Login de usuario
   async login(username: string, password: string): Promise<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
     const response: any = await firstValueFrom(
-      this.http.post(`${USUARIOS_API_URL}/login`, { username, password }, { headers })
+      this.http.post(`${AUTH_API_URL}/login`, { username, password }, { headers })
     );
 
-    if (!response?.token) {
-      const msg = response?.message || response?.error || 'Token no recibido';
+    // ⚠️ Validación de tokens
+    if (!response?.token || !response?.refreshToken) {
+      const msg = response?.message || response?.error || '❌ Tokens no recibidos';
       throw new Error(msg);
     }
 
+    // 💾 Guardar datos importantes
+    // 💾 Guardar datos importantes
     localStorage.setItem('token', response.token);
+    localStorage.setItem('refreshToken', response.refreshToken);
+    localStorage.setItem('username', response.username);
+
+    // ⏱️ Iniciar temporizador de expiración del refreshToken
+    iniciarTemporizadorDeExpiracion(response.refreshToken, this.router); // ← esto
 
     if (response.permisos) {
       localStorage.setItem('permisos', JSON.stringify(response.permisos));
@@ -29,11 +47,15 @@ export class UsuariosService {
     return response;
   }
 
+
+
+
+
   // 🔍 Obtener usuario por email
   async getUsuarioPorEmail(email: string): Promise<any | null> {
     try {
       const encodedEmail = encodeURIComponent(email);
-      const response = await fetch(`${USUARIOS_API_URL}/buscar-por-email?email=${encodedEmail}`);
+      const response = await fetch(`${AUTH_API_URL}/buscar-por-email?email=${encodedEmail}`);
       return response.ok ? await response.json() : null;
     } catch (error) {
       console.error('❌ Error al buscar usuario por email:', error);
@@ -45,7 +67,7 @@ export class UsuariosService {
   async enviarOtp(email: string): Promise<{ success: boolean; message?: string }> {
     try {
       const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      await firstValueFrom(this.http.post(`${USUARIOS_API_URL}/generate-otp`, { email }, { headers }));
+      await firstValueFrom(this.http.post(`${AUTH_API_URL}/generate-otp`, { email }, { headers }));
       return { success: true };
     } catch (error: any) {
       return { success: false, message: error?.error?.message || 'Error al generar OTP.' };
@@ -56,7 +78,7 @@ export class UsuariosService {
   async obtenerTiempoRestante(email: string): Promise<{ success: boolean; tiempoRestante?: number; message?: string }> {
     try {
       const encodedEmail = encodeURIComponent(email);
-      const response = await fetch(`${USUARIOS_API_URL}/otp-tiempo-restante?email=${encodedEmail}`);
+      const response = await fetch(`${AUTH_API_URL}/otp-tiempo-restante?email=${encodedEmail}`);
       const data = await response.json();
 
       if (!response.ok) throw new Error(data?.message || 'Error al consultar tiempo restante.');
@@ -71,7 +93,7 @@ export class UsuariosService {
   async reenviarOtp(email: string): Promise<{ success: boolean; message?: string }> {
     try {
       const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      await firstValueFrom(this.http.post(`${USUARIOS_API_URL}/reenviar-otp`, { email }, { headers }));
+      await firstValueFrom(this.http.post(`${AUTH_API_URL}/reenviar-otp`, { email }, { headers }));
       return { success: true };
     } catch (error: any) {
       return { success: false, message: error?.error?.message || 'Error al reenviar OTP.' };
@@ -82,7 +104,7 @@ export class UsuariosService {
   async verificarOtp(email: string, otp: string): Promise<{ success: boolean; message?: string }> {
     try {
       const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      await firstValueFrom(this.http.post(`${USUARIOS_API_URL}/verificar-otp`, { email, otp }, { headers }));
+      await firstValueFrom(this.http.post(`${AUTH_API_URL}/verificar-otp`, { email, otp }, { headers }));
       return { success: true };
     } catch (error: any) {
       return { success: false, message: error?.error?.message || 'Error al verificar OTP.' };
@@ -94,7 +116,7 @@ export class UsuariosService {
     try {
       const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       const response: any = await firstValueFrom(
-        this.http.post(`${USUARIOS_API_URL}/register`, userData, { headers })
+        this.http.post(`${AUTH_API_URL}/register`, userData, { headers })
       );
       return { success: true, data: response };
     } catch (error: any) {
@@ -501,27 +523,27 @@ export class UsuariosService {
 
 
 
-async cambiarPassword(id: string, nuevaPassword: string): Promise<{ success: boolean; message: string }> {
-  const token = localStorage.getItem('token');
-  const permisos = localStorage.getItem('permisos') || '';
+  async cambiarPassword(id: string, nuevaPassword: string): Promise<{ success: boolean; message: string }> {
+    const token = localStorage.getItem('token');
+    const permisos = localStorage.getItem('permisos') || '';
 
-  const headers = new HttpHeaders({
-    Authorization: `Bearer ${token}`,
-    'Content-Type': 'application/json',
-    'X-User-Permissions': permisos
-  });
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'X-User-Permissions': permisos
+    });
 
-  try {
-    await firstValueFrom(this.http.put(`${USUARIOS_API_URL}/${id}/cambiar-password-bypass`, {
-      nuevaPassword
-    }, { headers }));
+    try {
+      await firstValueFrom(this.http.put(`${USUARIOS_API_URL}/${id}/cambiar-password-bypass`, {
+        nuevaPassword
+      }, { headers }));
 
-    return { success: true, message: '✅ Contraseña actualizada correctamente' };
-  } catch (error: any) {
-    const msg = error?.error || '❌ Error al cambiar la contraseña';
-    return { success: false, message: msg };
+      return { success: true, message: '✅ Contraseña actualizada correctamente' };
+    } catch (error: any) {
+      const msg = error?.error || '❌ Error al cambiar la contraseña';
+      return { success: false, message: msg };
+    }
   }
-}
 
 
 

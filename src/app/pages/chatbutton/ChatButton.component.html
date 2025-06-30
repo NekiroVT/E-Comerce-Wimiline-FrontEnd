@@ -1,0 +1,22 @@
+<div class="chat-container">
+  <div class="mensajes">
+    <div
+      class="mensaje"
+      *ngFor="let msg of mensajes"
+      [class.propietario]="msg.senderId === userId"
+    >
+      <div class="contenido">{{ msg.content }}</div>
+      <div class="timestamp">{{ msg.timestamp | date:'shortTime' }}</div>
+    </div>
+  </div>
+
+  <div class="input-area">
+    <input
+      type="text"
+      [(ngModel)]="nuevoMensaje"
+      placeholder="Escribe un mensaje..."
+      (keyup.enter)="enviarMensaje()"
+    />
+    <button (click)="enviarMensaje()">Enviar</button>
+  </div>
+</div>

@@ -1,5 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { CarritoService } from '../../services/carrito.service';
+import { ProductosService } from '../../services/productos.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-carrito',
@@ -8,29 +12,116 @@ import { CommonModule } from '@angular/common';
   templateUrl: './carrito.component.html',
   styleUrls: ['./carrito.component.css']
 })
-export class CarritoComponent {
-  mostrarModal = false;
+export class CarritoComponent implements OnInit, OnDestroy {
+  mostrarCarritoMenu: boolean = false;
+  carritoPoco: any[] = [];
+  cargando: boolean = false;
+  totalCarrito: number = 0;
+  private timeoutId: any;
+  private carritoSub: Subscription | undefined;
 
-  productos = [
-    { id: 1, nombre: 'Camiseta Negra', precio: 49.90 },
-    { id: 2, nombre: 'Zapatillas Urbanas', precio: 179.50 },
-    { id: 3, nombre: 'Polo Oversize', precio: 65.00 },
-  ];
+  cantidadSeleccionada: number = 1;
+  itemExistente: any = null;
+  stockMaximo: number = 0;
 
-  abrirModal(): void {
-    this.mostrarModal = true;
+  constructor(
+    private carritoService: CarritoService,
+    private productosService: ProductosService,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.obtenerCarrito();
+
+    // ✅ Solo escuchar cambios si es necesario desde otro componente (opcional)
+    this.carritoSub = this.carritoService.carritoActualizado$.subscribe(() => {
+      if (!this.mostrarCarritoMenu) {
+        this.obtenerCarrito(); // solo si estás fuera del hover del carrito
+      }
+    });
   }
 
-  cerrarModal(): void {
-    this.mostrarModal = false;
+  ngOnDestroy(): void {
+    this.carritoSub?.unsubscribe();
   }
 
-  eliminarProducto(id: number): void {
-    this.productos = this.productos.filter(p => p.id !== id);
+  async obtenerCarrito(): Promise<void> {
+    this.cargando = true;
+    this.carritoPoco = await this.carritoService.listarPocoCarrito();
+    this.carritoPoco.forEach(item => {
+      item.total = item.precioUnitario * item.cantidad;
+    });
+    this.totalCarrito = this.carritoPoco.reduce((acc, item) => acc + item.total, 0);
+    this.cargando = false;
   }
 
-  vaciarCarrito(): void {
-    this.productos = [];
-    this.cerrarModal();
+  mostrar(): void {
+    if (this.timeoutId) clearTimeout(this.timeoutId);
+    this.mostrarCarritoMenu = true;
+    if (this.carritoPoco.length === 0) {
+      this.obtenerCarrito();
+    }
+  }
+
+  ocultar(): void {
+    this.timeoutId = setTimeout(() => {
+      this.mostrarCarritoMenu = false;
+    }, 100);
+  }
+
+  async aumentarCantidad(item: any): Promise<void> {
+    this.stockMaximo = await this.carritoService.obtenerStockCombinacion(item.combinacionId);
+
+    if (item.cantidad < this.stockMaximo) {
+      item.cantidad++;
+      await this.actualizarCantidad(item);
+    } else {
+      console.log("❌ No se puede aumentar la cantidad. Stock máximo alcanzado.");
+    }
+  }
+
+  async disminuirCantidad(item: any): Promise<void> {
+    if (item.cantidad > 1) {
+      item.cantidad--;
+      await this.actualizarCantidad(item);
+    } else {
+      console.log("❌ No se puede disminuir más la cantidad.");
+    }
+  }
+
+  private async actualizarCantidad(item: any): Promise<void> {
+    try {
+      await this.carritoService.actualizarCantidad(item.combinacionId, item.cantidad);
+      console.log("🟢 Cantidad sincronizada con el backend");
+
+      // 🔄 Solo actualiza el total afectado
+      const nuevoTotalItem = item.precioUnitario * item.cantidad;
+      const diferencia = nuevoTotalItem - (item.total || 0);
+      this.totalCarrito += diferencia;
+      item.total = nuevoTotalItem;
+
+      this.animateNumberChange(nuevoTotalItem);
+      this.carritoService.notificarCambioCarrito(); // 🔔 Notifica a otros componentes
+
+    } catch (error) {
+      console.error("❌ Error al actualizar cantidad:", error);
+      alert("No se pudo actualizar la cantidad en el carrito.");
+    }
+
+    
+    
+  }
+
+
+  animateNumberChange(targetValue: number): void {
+    console.log(`Total actualizado para este producto: ${targetValue}`);
+  }
+
+  pagar(): void {
+    console.log("🟢 Procediendo al pago...");
+  }
+
+  verCarrito(): void {
+    this.router.navigate(['/carrito']);
   }
 }

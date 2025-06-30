@@ -13,6 +13,11 @@ import { OpccionRolesComponent } from './app/pages/opccion-roles/opccion-roles.c
 import { OpccionUserrolesComponent } from './app/pages/opccion-userroles/opccion-userroles.component';
 import { OpccionRolepermsComponent } from './app/pages/opccion-roleperms/opccion-roleperms.component';
 import { OpccionUsuariosComponent } from './app/pages/opccion-usuarios/opccion-usuarios.component';
+import { ChatComponent } from './app/pages/chatbutton/chatinterfaz/chat.component'; // Ajusta la ruta si está en otro lugar
+import { VistaCarritoComponent } from './app/pages/vista-carrito/vista-carrito.component';  // Asegúrate de la ruta correcta
+import { EnvioComponent } from './app/pages/envio/envio.component';
+
+
 
 
 
@@ -24,42 +29,50 @@ export const appRoutes: Routes = [
   { path: 'email', component: EmailComponent },
   { path: 'otp', component: OtpComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'selectproducto/:id.html', component: ProductoVerComponent },
+  { path: 'selectproducto/:id', component: ProductoVerComponent },
+  { path: 'chat', component: ChatComponent},
+  { path: 'carrito', component: VistaCarritoComponent },
   {
-    path: 'panel-vendedor',
-    component: PanelVendedorComponent
-  },
-
-  {
-  path: 'panel-admin',
-  component: PanelAdminComponent,
+  path: 'panel-vendedor',
+  component: PanelVendedorComponent,
   canActivate: [permissionGuard],
-  data: { permisos: ['ver:panel.admin'] },
+  data: { permisos: ['ver:panel.vendedor'] },
   children: [
-    {
-      path: 'permisos',
-      component: OpccionPermisosComponent
-    },
-    {
-      path: 'roles',
-      component: OpccionRolesComponent // 👈 esta es la nueva ruta
-    },
-    {
-      path: 'userroles',
-      component: OpccionUserrolesComponent // 👈 esta es la nueva ruta
-    },
-    {
-      path: 'roleperms',
-      component: OpccionRolepermsComponent // 👈 esta es la nueva ruta
-    },
-    {
-      path: 'usuarios',
-      component: OpccionUsuariosComponent // 👈 esta es la nueva ruta
-    }
+
   ]
 }
-
 ,
+
+  {
+    path: 'panel-admin',
+    component: PanelAdminComponent,
+    canActivate: [permissionGuard],
+    data: { permisos: ['ver:panel.admin'] },
+    children: [
+      {
+        path: 'permisos',
+        component: OpccionPermisosComponent
+      },
+      {
+        path: 'roles',
+        component: OpccionRolesComponent // 👈 esta es la nueva ruta
+      },
+      {
+        path: 'userroles',
+        component: OpccionUserrolesComponent // 👈 esta es la nueva ruta
+      },
+      {
+        path: 'roleperms',
+        component: OpccionRolepermsComponent // 👈 esta es la nueva ruta
+      },
+      {
+        path: 'usuarios',
+        component: OpccionUsuariosComponent // 👈 esta es la nueva ruta
+      }
+    ]
+  }
+
+  ,
 
 
 

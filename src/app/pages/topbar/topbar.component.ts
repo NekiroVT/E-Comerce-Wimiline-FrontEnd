@@ -8,7 +8,7 @@ import { ButtonPerfilComponent } from '../button-perfil/button-perfil.component'
 import { ButtonCategoriasComponent } from '../../pages/button-categorias/button-categorias.component';
 import { ButtonAyudaComponent } from '../../pages/button-ayuda/button-ayuda.component';
 import { ButtonModeComponent } from '../../pages/button-mode/button-mode.component';
-
+import { ChatButtonComponent } from '../../pages/chatbutton/ChatButtonComponent';
 
 
 @Component({
@@ -22,7 +22,8 @@ import { ButtonModeComponent } from '../../pages/button-mode/button-mode.compone
     ButtonPerfilComponent,
     ButtonCategoriasComponent,
     ButtonAyudaComponent,
-    ButtonModeComponent 
+    ButtonModeComponent,
+    ChatButtonComponent
   ],
   templateUrl: './topbar.component.html',
   styleUrls: ['./topbar.component.css']

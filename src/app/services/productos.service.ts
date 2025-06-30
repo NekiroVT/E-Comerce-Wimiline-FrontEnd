@@ -5,47 +5,60 @@ import { firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ProductosService {
-    constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-    // 🛒 Crear nuevo producto
-    async crearProducto(productoData: any): Promise<any> {
-        try {
-            const token = localStorage.getItem('token'); // reemplazo de AsyncStorage
+  // 🛒 Crear nuevo producto
 
-            const headers = new HttpHeaders({
-                'Content-Type': 'application/json',
-                ...(token && { Authorization: `Bearer ${token}` })
-            });
 
-            const response = await firstValueFrom(
-                this.http.post(PRODUCTOS_API_URL, productoData, { headers })
-            );
+  // 📦 Obtener todos los productos (tarjetas)
+  async getProductos(): Promise<any[]> {
+    try {
+      const token = localStorage.getItem('token');
 
-            return response;
-        } catch (error: any) {
-            console.error('❌ Error al crear producto:', error.message);
-            throw new Error('No se pudo crear el producto');
-        }
+      const headers = token
+        ? new HttpHeaders({ Authorization: `Bearer ${token}` })
+        : new HttpHeaders();
+
+      const response = await firstValueFrom(
+        this.http.get<any>(`${PRODUCTOS_API_URL}/tarjetas`, { headers })
+      );
+
+      return response?.productos || []; // Extrae "productos" del wrapper
+    } catch (error: any) {
+      console.error('❌ Error al obtener productos:', error.message);
+      return [];
     }
+  }
 
-    // 📦 Obtener todos los productos
-    async getProductos(): Promise<any[]> {
-        try {
-            const token = localStorage.getItem('token');
+  async getProductoPorId(id: string): Promise<any | null> {
+    try {
+      const response = await firstValueFrom(
+        this.http.get<any>(`${PRODUCTOS_API_URL}/detalles/${id}`)
+      );
 
-            const headers = token
-                ? new HttpHeaders({ Authorization: `Bearer ${token}` })
-                : new HttpHeaders();
+      // Aquí puedes seleccionar la combinación principal o alguna lógica de selección
+      const producto = response;  // El producto completo con combinaciones
+      if (producto && producto.combinaciones) {
+        // Selecciona la combinación correcta, aquí supongo que eliges la principal o alguna lógica similar
+        const combinacionSeleccionada = producto.combinaciones.find((comb: any) => comb.esPrincipal);
 
-            const response = await firstValueFrom(
-                this.http.get<any[]>(PRODUCTOS_API_URL, { headers })
-            );
-
-            return response;
-        } catch (error: any) {
-            console.error('❌ Error al obtener productos:', error.message);
-            return []; // En caso de error, retorna un array vacío
+        if (combinacionSeleccionada) {
+          return {
+            ...producto,
+            stock: combinacionSeleccionada.stock,  // Agregar el stock de la combinación
+            precio: combinacionSeleccionada.precio,
+            imagen: combinacionSeleccionada.imagenes?.[0]?.urlImagen || null,
+          };
         }
+      }
+
+      return null;  // Si no se encuentra la combinación
+    } catch (error: any) {
+      console.error('❌ Error al obtener detalle del producto:', error.message);
+      return null;
     }
+  }
+
+
 
 }

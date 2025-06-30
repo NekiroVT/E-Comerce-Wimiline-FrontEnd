@@ -1,0 +1,268 @@
+/* Envoltura general del carrito */
+.carrito-wrapper {
+  background-color: #ffffff;
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-family: Arial, sans-serif;
+}
+
+/* Cabecera del carrito */
+.carrito-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.carrito-header h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.acciones {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 15px;
+  color: #2f0909;
+}
+
+.acciones input[type="checkbox"] {
+  transform: scale(1.4);
+  margin-right: 8px;
+}
+
+.acciones a {
+  color: #6c63ff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Contenedor de los ítems del carrito */
+.carrito-items-container {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+/* Cada ítem del carrito */
+.carrito-item {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.carrito-item-flex {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 12px;
+}
+
+/* Imagen del producto */
+.imagen-columna img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Info del producto */
+.detalles-columna {
+  flex: 1;
+}
+
+.carrito-item-nombre {
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.carrito-item-precio {
+  font-size: 14px;
+  color: #6c63ff;
+  font-weight: 500;
+}
+
+.carrito-item-total {
+  font-size: 14px;
+  color: #222;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.carrito-item-user {
+  color: #777;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.flecha-derecha {
+  font-size: 18px;
+  color: #aaa;
+}
+
+.carrito-item-derecha {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* pegado a la derecha */
+  gap: 10px;
+}
+
+
+.fila-inferior {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.fila-superior button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px; /* O ajústalo según necesidad */
+  font-size: 18px;
+  line-height: 1;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.fila-superior {
+  display: flex;
+  gap: 10px;
+  align-items: center; /* 👈 Esto es lo importante */
+}
+
+
+.carrito-item-acciones {
+  display: flex;
+  flex-direction: row; /* ✅ OBLIGATORIO */
+  gap: 10px;
+}
+
+/* Controles de cantidad */
+.carrito-item-controles {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-cantidad {
+  background-color: white;
+  color: #6c63ff;
+  border: 2px solid #6c63ff;
+  border-radius: 50%;
+  padding: 4px;
+  font-size: 18px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.btn-cantidad:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+
+.carrito-item-acciones button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: #6c63ff;
+}
+
+/* Pie del carrito */
+.carrito-footer {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+  margin-top: 15px;
+  border-top: 1px solid #ccc;
+}
+
+
+
+
+
+
+
+.btn-icono {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.icono-favorito {
+  color: #6551C5; /* rosado */
+  font-size: 18px;
+}
+
+.icono-basura {
+  color: #6551C5; /* gris */
+  font-size: 18px;
+}
+
+.icono-favorito:hover {
+  color: #ad1457;
+}
+
+.icono-basura:hover {
+  color: #343a40;
+}
+
+
+
+
+/* Estilo universal para todos los checkboxes */
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #6551C5;
+  border-radius: 50%; /* Circular */
+  background-color: #fff;
+  cursor: pointer;
+  position: relative;
+  outline: none;
+  transition: 0.2s;
+  vertical-align: middle;
+}
+
+/* Cuando está marcado */
+input[type="checkbox"]:checked {
+  background-color: #6551C5;
+  border-color: #6551C5;
+}
+
+/* Punto blanco central */
+input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: white;
+}

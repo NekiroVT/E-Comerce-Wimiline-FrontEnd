@@ -84,12 +84,13 @@
 
 app-top-bar {
   display: block;
-  margin-bottom: 16px;
+  /*margin-bottom: 16px;*/
 }
 
 app-navbar {
   display: block;
   margin-bottom: 24px;
+  text-decoration: none;
 }
 
 .productos-wrapper {

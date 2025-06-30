@@ -86,19 +86,23 @@ body.modo-oscuro .search-logo {
 body.modo-oscuro .navbar {
   background-color: #3e3e3e !important;
   box-shadow: 0 2px 4px rgba(255, 255, 255, 0.05) !important;
+  text-decoration: none !important;
 }
 
 body.modo-oscuro .navbar a {
   color: #ddd !important;
+  text-decoration: none !important;
 }
 
 body.modo-oscuro .navbar a:hover {
   color: #ffb74d !important;
+  text-decoration: none !important;
 }
 
 body.modo-oscuro .navbar a.active {
   color: #c2b0ff !important;
   border-bottom: 2px solid #c2b0ff !important;
+  text-decoration: none !important;
 }
 
 /*-- Home --*/

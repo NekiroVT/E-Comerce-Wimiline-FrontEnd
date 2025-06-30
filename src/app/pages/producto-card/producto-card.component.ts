@@ -11,9 +11,5 @@ import { CommonModule } from '@angular/common';
 export class ProductoCardComponent {
   @Input() producto: any;
 
-  getVariaciones(): string {
-    return this.producto?.variaciones?.length > 0
-      ? this.producto.variaciones.map((v: any) => v.nombreVariacion).join(', ')
-      : 'No hay variaciones disponibles.';
-  }
+  
 }

@@ -6,7 +6,7 @@
 
   <div class="categoria-menu" [ngClass]="{ 'activa': mostrarMenu }">
     <ng-container *ngIf="!cargando && categorias.length > 0; else vacio">
-      <div *ngFor="let cat of categorias" class="categoria-opcion">
+      <div *ngFor="let cat of categorias" class="categoria-opcion" (click)="handleClick(cat)">
         {{ cat.nombre }}
       </div>
     </ng-container>

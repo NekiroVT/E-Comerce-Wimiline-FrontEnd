@@ -1,0 +1,45 @@
+<div class="contenedor-pagos">
+  <!-- Resumen -->
+  <div class="bloque resumen">
+    <h2>Resumen</h2>
+    <p class="estimacion">
+      Estimación total <span class="monto">PEN {{ totalCarrito | number:'1.2-2' }}</span>
+    </p>
+    <button class="btn-continuar" [disabled]="totalCarrito <= 0" (click)="continuarPago()">
+      Continuar ({{ cantidadSeleccionada }})
+    </button>
+  </div>
+
+  <!-- Línea divisoria -->
+  <hr class="linea-divisoria" />
+
+  <!-- Métodos de pago -->
+  <div class="bloque pago">
+    <h3>Paga con</h3>
+    <div class="metodos">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa" />
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="Mastercard" />
+      <img src="https://images.ctfassets.net/drk57q8lctrm/21FLkQ2lbOCWynXsDZvXO5/485a163f199ef7749b914e54d4dc3335/paypal-logo.webp" alt="JCB" />
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7tTx07a9nRLlTE1D-MJSv3P5k6BLd058keA&s" alt="AmEx" />
+    </div>
+
+    <div class="proteccion">
+      <p class="titulo"><strong>Protección del comprador</strong></p>
+      <p class="descripcion">
+        <img class="escudo" src="https://img.freepik.com/vector-gratis/escudo-marca-verificacion-sombra_78370-4413.jpg?semt=ais_hybrid&w=740" alt="XD">
+        Recibe un reembolso de tu dinero si el artículo no llega o es diferente al de la descripción.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ Modal del componente Envio -->
+<!-- ✅ Modal del componente Envio con Font Awesome -->
+<div class="modal-envio" *ngIf="mostrarModalEnvio">
+  <div class="modal-contenido">
+    <button class="cerrar-modal" (click)="cerrarModalEnvio()">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <app-envio></app-envio>
+  </div>
+</div>

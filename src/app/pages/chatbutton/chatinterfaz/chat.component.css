@@ -1,0 +1,85 @@
+.chat-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #111b21;
+  color: white;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.mensajes {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-image: url('https://plus.unsplash.com/premium_photo-1681426322370-c99a29f6f0cd?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGFyZWQlMjBkZSUyMG5lJUMzJUIzbnxlbnwwfHwwfHx8MA%3D%3D'); /* patrón tipo WhatsApp */
+  background-size: contain;
+  background-repeat: repeat;
+}
+
+.mensaje {
+  max-width: 70%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background-color: #202c33;
+  align-self: flex-start;
+  position: relative;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.mensaje.propietario {
+  align-self: flex-end;
+  background-color: #005c4b;
+}
+
+.contenido {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.timestamp {
+  font-size: 0.7rem;
+  text-align: right;
+  color: #ccc;
+  margin-top: 4px;
+}
+
+.input-area {
+  display: flex;
+  padding: 12px;
+  background-color: #202c33;
+  border-top: 1px solid #2c3e50;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background-color: #2a3942;
+  border: none;
+  color: white;
+  outline: none;
+  font-size: 1rem;
+}
+
+input::placeholder {
+  color: #ccc;
+}
+
+button {
+  margin-left: 10px;
+  background-color: #25d366;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #1da851;
+}
