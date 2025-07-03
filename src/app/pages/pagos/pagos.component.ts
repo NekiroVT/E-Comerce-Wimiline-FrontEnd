@@ -29,11 +29,13 @@ export class PagosComponent implements OnInit {
   }
 
   continuarPago(): void {
-    if (this.totalCarrito > 0) {
-      console.log('🔒 Abriendo modal de Envío...');
-      this.mostrarModalEnvio = true; // 👈 Abre el modal
-    }
+  if (this.totalCarrito > 0) {
+    console.log('🔒 Guardando snapshot de seleccionados...');
+    this.carritoService.actualizarSeleccionados(this.carritoService.getSeleccionados());
+    this.mostrarModalEnvio = true; // 👈 Ahora sí abre el modal seguro
   }
+}
+
 
   cerrarModalEnvio(): void {
     this.mostrarModalEnvio = false; // 👈 Cierra modal desde dentro del hijo

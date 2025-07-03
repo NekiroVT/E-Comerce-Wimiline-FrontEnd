@@ -1,5 +1,5 @@
 // URL base del backend
-const API_BASE = 'http://192.168.1.100:8086/api';
+const API_BASE = 'http://26.93.94.229:8086/api';
 
 // Endpoints específicos
 export const AUTH_API_URL = `${API_BASE}/auth`;
@@ -13,6 +13,7 @@ export const USERROLES_API_URL = `${API_BASE}/userroles`;
 export const ROLEPERMS_API_URL = `${API_BASE}/rolespermisos`;
 export const CARRITO_API_URL = `${API_BASE}/carrito`;
 export const DIRECCIONES_API_URL = `${API_BASE}/direcciones`;
+export const LOGISTICA_API_URL = `${API_BASE}/producto-logistica`;
 
 
 

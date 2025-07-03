@@ -2,13 +2,12 @@
 
   <!-- 🚩 Paso 1: Selección de tipo -->
   <div *ngIf="modo === 'seleccion'" class="opciones-envio">
-  <h3>¿Cómo quieres tu envío?</h3>
-  <div class="grupo-botones">
-    <button (click)="elegirDomicilio()">Envío a Domicilio</button>
-    <button (click)="elegirTolva()">Envío a Tolva</button>
+    <h3>¿Cómo quieres tu envío?</h3>
+    <div class="grupo-botones">
+      <button (click)="elegirDomicilio()">Envío a Domicilio</button>
+      <button (click)="elegirTolva()">Envío a Tolva</button>
+    </div>
   </div>
-</div>
-
 
   <!-- 🚩 Paso 2: Lista de direcciones -->
   <div *ngIf="modo === 'domicilio'" class="lista-direcciones">
@@ -40,39 +39,32 @@
   </div>
 
   <!-- 🚩 Paso 3: Formulario para crear -->
-  <!-- 🚩 Paso 3: Formulario para crear -->
-<div *ngIf="modo === 'crear'" class="form-direccion">
-  <h3>Crear Nueva Dirección</h3>
+  <div *ngIf="modo === 'crear'" class="form-direccion">
+    <h3>Crear Nueva Dirección</h3>
 
-  <form [formGroup]="formDireccion" (ngSubmit)="guardarDireccion()">
+    <form [formGroup]="formDireccion" (ngSubmit)="guardarDireccion()">
 
-    <label>Dirección
-      <input formControlName="direccion" placeholder="Ej: Jr. Los Olivos 123" />
-    </label>
+      <label>Dirección
+        <input formControlName="direccion" placeholder="Ej: Jr. Los Olivos 123" />
+      </label>
 
-    <!-- 🚫 Código Postal YA NO SE MUESTRA -->
-    <!-- 🚫 Latitud YA NO SE MUESTRA -->
-    <!-- 🚫 Longitud YA NO SE MUESTRA -->
+      <label>Referencia
+        <input formControlName="referencia" placeholder="Ej: Puerta azul" />
+      </label>
 
-    <label>Referencia
-      <input formControlName="referencia" placeholder="Ej: Puerta azul" />
-    </label>
+      <label>Destinatario
+        <input formControlName="destinatario" placeholder="Ej: Elias Crack" />
+      </label>
 
-    <label>Destinatario
-      <input formControlName="destinatario" placeholder="Ej: Elias Crack" />
-    </label>
+      <button type="button" (click)="abrirSelectorUbicacion()">
+        📍 {{ formDireccion.value.latitud && formDireccion.value.longitud ? 'Cambiar Ubicación' : 'Elegir Ubicación' }}
+      </button>
 
-    <button type="button" (click)="abrirSelectorUbicacion()">
-      📍 {{ formDireccion.value.latitud && formDireccion.value.longitud ? 'Cambiar Ubicación' : 'Elegir Ubicación' }}
-    </button>
+      <button type="submit" [disabled]="formDireccion.invalid">Guardar Dirección</button>
+    </form>
+  </div>
 
-    <button type="submit" [disabled]="formDireccion.invalid">Guardar Dirección</button>
-
-  </form>
-</div>
-
-
-  <!-- 🚩 Paso 4: Vista de mapa para ver -->
+  <!-- 🚩 Paso 4: Vista de mapa -->
   <div *ngIf="modo === 'ver-mapa'" class="ver-mapa-container">
     <app-mapa
       [latitud]="direccionAMostrarEnMapa.latitud"
@@ -98,6 +90,30 @@
 
     <button (click)="confirmarUbicacion()">✅ Confirmar Ubicación</button>
     <button (click)="cerrarSelectorUbicacion()">❌ Cancelar</button>
+  </div>
+
+  <!-- 🚩 Paso 6: Vista Preview después de calcular envío -->
+  <div *ngIf="modo === 'preview'" class="preview-envio">
+    <h3>Resumen de Envío</h3>
+
+    <div *ngFor="let envio of previewEnvios.envios" class="envio-item">
+      <p><strong>Sede:</strong> {{ envio.nombreSede }}</p>
+      <p><strong>Distancia:</strong> {{ envio.distanciaKm | number:'1.2-2' }} km</p>
+      <p><strong>Precio:</strong> S/ {{ envio.precioEnvio }}</p>
+      <p><strong>Tiempo Estimado:</strong> {{ envio.tiempoEstimadoDias }} días</p>
+      <p><strong>Productos:</strong></p>
+      <ul>
+       <li *ngFor="let nombre of envio.productosNombres">
+    {{ nombre }}
+  </li>
+      </ul>
+    </div>
+
+    <p class="total-envio">
+      <strong>Total Envío:</strong> S/ {{ totalEnvio }}
+    </p>
+
+    <button (click)="irAPagar()">Ir a Pagar</button>
   </div>
 
 </div>

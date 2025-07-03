@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LogisticaService } from '../../services/logistica.service';
+import { CarritoService } from '../../services/carrito.service';
 import { MapaComponent } from '../mapa/mapa.component';
 import { GoogleMapsModule, GoogleMap } from '@angular/google-maps';
 
@@ -14,7 +15,7 @@ import { GoogleMapsModule, GoogleMap } from '@angular/google-maps';
 })
 export class EnvioComponent implements OnInit {
 
-  modo: 'seleccion' | 'domicilio' | 'crear' | 'ver-mapa' | 'elegir-ubicacion' = 'seleccion';
+  modo: 'seleccion' | 'domicilio' | 'crear' | 'ver-mapa' | 'elegir-ubicacion' | 'preview' = 'seleccion';
 
   direcciones: any[] = [];
   direccionSeleccionadaId: string | null = null;
@@ -22,20 +23,22 @@ export class EnvioComponent implements OnInit {
 
   formDireccion!: FormGroup;
 
-  // ✅ Tu coordenada por defecto
   center: google.maps.LatLngLiteral = {
     lat: -12.046410102496333,
     lng: -77.04279187749908
   };
-
   markerPosition?: google.maps.LatLngLiteral;
 
   @ViewChild(GoogleMap) map!: GoogleMap;
 
+  previewEnvios: any = null;     
+  totalEnvio: number = 0;        
+
   constructor(
     private logisticaService: LogisticaService,
+    private carritoService: CarritoService,
     private fb: FormBuilder
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.formDireccion = this.fb.group({
@@ -72,28 +75,64 @@ export class EnvioComponent implements OnInit {
   }
 
   async guardarDireccion() {
-  if (this.formDireccion.invalid) return;
+    if (this.formDireccion.invalid) return;
+
+    try {
+      await this.logisticaService.guardarDireccion(this.formDireccion.value);
+      this.formDireccion.reset();
+      this.modo = 'domicilio';
+      await this.cargarDirecciones();
+    } catch (error) {
+      console.error('❌ Error al guardar dirección:', error);
+    }
+  }
+
+  async confirmarDireccion() {
+  if (!this.direccionSeleccionadaId) {
+    alert('Selecciona una dirección primero');
+    return;
+  }
+
+  const seleccionados = this.carritoService.getSeleccionados();
+  console.log('🟢 Seleccionados antes de calcular:', seleccionados);
+
+const productoIds = seleccionados.map(item => item.productoId); // ✅ CORRECTO
+
+  console.log('🟢 UUIDs que mando:', productoIds);
+
+  const body = {
+    'producto-ids': productoIds,
+    'direccion-id': this.direccionSeleccionadaId
+  };
+  console.log('🟢 Body final al POST:', body);
 
   try {
-    await this.logisticaService.guardarDireccion(this.formDireccion.value);
-    // alert('✅ Dirección guardada correctamente'); ← BORRADO
-    this.formDireccion.reset();
-    this.modo = 'domicilio';
-    await this.cargarDirecciones();
-  } catch (error) {
-    console.error('❌ Error al guardar dirección:', error);
-    // alert('Error al guardar dirección'); ← BORRADO
-  }
+  this.previewEnvios = await this.logisticaService.calcularEnvio(body);
+  console.log('✅ Preview de envíos:', this.previewEnvios);
+
+  // 🔑 Enriquecer: mapea los nombres legibles
+  this.previewEnvios.envios.forEach((envio: any) => {
+    envio.productosNombres = envio.productoIds.map((id: string) => {
+      const encontrado = seleccionados.find(item => item.productoId === id);
+      return encontrado ? encontrado.nombreProducto : id;
+    });
+  });
+
+  console.log('✅ Preview enriquecido:', this.previewEnvios);
+
+  this.totalEnvio = this.previewEnvios.envios.reduce(
+    (acc: number, envio: any) => acc + envio.precioEnvio,
+    0
+  );
+
+  this.modo = 'preview';
+
+} catch (error) {
+  console.error('❌ Error al calcular envío:', error);
 }
 
+}
 
-  confirmarDireccion() {
-    if (!this.direccionSeleccionadaId) {
-      alert('Selecciona una dirección primero');
-      return;
-    }
-    console.log('✅ Dirección elegida ID:', this.direccionSeleccionadaId);
-  }
 
   verEnMapa(dir: any) {
     this.direccionAMostrarEnMapa = dir;
@@ -125,7 +164,6 @@ export class EnvioComponent implements OnInit {
         },
         error => {
           console.warn('⚠️ No se pudo obtener ubicación real:', error);
-          // ✅ Fallback a tu coordenada real
           this.center = {
             lat: -12.046410102496333,
             lng: -77.04279187749908
@@ -134,7 +172,6 @@ export class EnvioComponent implements OnInit {
         }
       );
     } else {
-      // ✅ Siempre fallback si no hay nada
       this.center = {
         lat: -12.046410102496333,
         lng: -77.04279187749908
@@ -142,7 +179,6 @@ export class EnvioComponent implements OnInit {
       this.map?.panTo(this.center);
     }
 
-    // El marcador inicia vacío → solo sale si hace clic.
     this.markerPosition = undefined;
   }
 
@@ -189,4 +225,11 @@ export class EnvioComponent implements OnInit {
       this.cerrarSelectorUbicacion();
     });
   }
+
+  irAPagar() {
+  console.log('💸 Ir a pagar: aquí lanzas el flujo de pago (PayPal, Yape, etc).');
+  // Aquí dentro llamas a tu PagoService, abres el checkout, etc.
+}
+
+
 }
